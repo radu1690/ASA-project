@@ -1,0 +1,1 @@
+node src/houseworld/scenario4.js > app.log 2>&1

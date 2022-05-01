@@ -1,0 +1,6 @@
+A sensor can detect only one event of the same type in a given moment. For example:
+    Power consumption monitor: at 19:00 the washing machine finishes (power consumption changes) and at the same time the
+    dishwasher starts a cycle (power consumption changes). The sensor detects only the first change!
+
+Do we need to simulate movement between multiple rooms? For example if I go from the kitchen to the bathroom, I also go through 
+the entrance and the corridor.

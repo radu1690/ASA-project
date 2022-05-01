@@ -1,0 +1,21 @@
+{
+  "name": "autonode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "graph-data-structure": "^2.0.0",
+    "graphology": "^0.24.1",
+    "graphology-shortest-path": "^2.0.1",
+    "socket.io": "^4.4.1"
+  }
+}
