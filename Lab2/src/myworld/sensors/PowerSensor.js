@@ -39,6 +39,12 @@ class SensePowerIntention extends Intention {
         }
     }
 
+    // *exec() {
+    //     this.house.utilities.electricity.observe('consumption', (v, k)=>{
+    //         this.log('sense: global power consumption  changed: ' + v + ' watts')
+    //     })
+    // }
+
 }
 
 

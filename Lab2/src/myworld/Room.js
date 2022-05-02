@@ -6,7 +6,7 @@ class Room extends Observable {
         super()
         this.house = house; // reference to the house
         this.name = name; // non-observable
-        this.set('sun_illumination', 'normal') // observable  [low, normal, high]
+        this.set('sun_illumination', 'low') // observable  [low, normal, high]
         this.devices = devices //non-observable
         this.doors_to = doors_to;//reachable rooms through doors
         this.connected_to = connected_to;//reachable rooms without doors
