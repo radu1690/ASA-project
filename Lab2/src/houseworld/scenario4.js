@@ -54,7 +54,7 @@ Clock.global.observe('mm', (mm) => {
     if(time.hh==19 && time.mm==0)
         myHouse.people.bob.moveTo('kitchen')
     if(time.hh==20 && time.mm==15)
-        myHouse.devices.kitchen_light.switchOffLight()
+        myHouse.people.bob.moveTo('living_room')
         // myHouse.people.bob.in_room = 'living_room'
 })
 

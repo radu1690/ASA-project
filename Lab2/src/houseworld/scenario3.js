@@ -5,7 +5,7 @@ const Agent = require('../bdi/Agent')
 const Goal = require('../bdi/Goal')
 const Intention = require('../bdi/Intention')
 
-
+const {AlarmGoal, AlarmIntention} = require('./Alarm')
 
 class House {
 
@@ -87,7 +87,11 @@ Clock.global.observe('mm', (key, mm) => {
 var a1 = new Agent('house_agent')
 
 class SetupAlarm extends Goal {
-
+    constructor(hh, mm) {
+        super()
+        this.hh = hh
+        this.mm = mm
+    }
 }
 
 class MyAlarm extends Intention {
@@ -96,8 +100,9 @@ class MyAlarm extends Intention {
     }   
     *exec () {
         while(true) {
+            //console.log(this.goal.hh.hh);
             yield Clock.global.notifyChange('mm')
-            if (Clock.global.hh == 6) {
+            if (Clock.global.hh == this.goal.hh) {
                 console.log('ALARM, it\'s 6am!')
                 break;
             }
@@ -107,4 +112,7 @@ class MyAlarm extends Intention {
 
 a1.intentions.push(MyAlarm)
 
-a1.postSubGoal(new SetupAlarm({hh:6, mm:0}))
+a1.postSubGoal(new SetupAlarm(6, 0))
+
+// a1.intentions.push(AlarmIntention)
+// a1.postSubGoal( new AlarmGoal({hh:6, mm:0}) )

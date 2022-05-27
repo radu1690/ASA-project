@@ -2,13 +2,14 @@ const Intention = require('../bdi/Intention')
 const PddlDomain = require('./PddlDomain')
 const PddlProblem = require('./PddlProblem')
 const execFile = require('child_process').execFile;
-const PlanningGoal =  require('../planning/PlanningGoal')
+const pddlActionGoal =  require('./actions/pddlActionGoal')
+const PlanningGoal =  require('./PlanningGoal')
 
 
 
-function blackboxGenerator (intentions = []) {
+function setup (intentions = []) {
 
-    var Blackbox = class extends Intention {
+    var PlanningIntention = class extends Intention {
         
         constructor (agent, goal) {
             super(agent, goal)
@@ -61,7 +62,7 @@ function blackboxGenerator (intentions = []) {
             if (!planBeginned) {
                 this.log('no plan found')
                 this.log(result)
-                return Promise.reject('Plan not found');
+                return Promise.reject(new Error('Plan not found'));
             }
 
             var previousNumber = 0
@@ -71,7 +72,13 @@ function blackboxGenerator (intentions = []) {
                 var args = line
                 // console.log(number, action, args)
                 var intentionClass = this.constructor.getAction(action)
-                var intentionInstance = new intentionClass(this.agent, new PlanningGoal({args: args}) )
+                var mappedArgs = {}
+                for (let index = 0; index < intentionClass.parameters.length; index++) {
+                    let k = intentionClass.parameters[index]
+                    let v = args[index]
+                    mappedArgs[k] = v
+                }
+                var intentionInstance = new intentionClass(this.agent, new pddlActionGoal(mappedArgs) )
                 this.plan.push({parallel: number==previousNumber, intention: intentionInstance});
             }
             
@@ -95,13 +102,19 @@ function blackboxGenerator (intentions = []) {
             var previousStepGoals = []
 
             for (const step of this.plan) {
-                if(step.parallel) {
-                    previousStepGoals.push( step.intention.run().catch( err => err ) )
+                if (step.parallel) {
+                    this.log('Starting concurrent step with Intention: ' + step.intention.toString())
                 }
                 else {
                     yield Promise.all(previousStepGoals)
-                    previousStepGoals = [ step.intention.run().catch( err => err ) ]
+                    previousStepGoals = []
+                    this.log('Starting sequential step with Intention: ' + step.intention.toString())
                 }
+                previousStepGoals.push(
+                    step.intention.run().catch( err => {
+                        return Promise.reject(new Error('Plan execution aborted'));
+                    } )
+                )
             }
 
             // wait for last steps to complete before finish blackbox plan execution intention
@@ -112,10 +125,10 @@ function blackboxGenerator (intentions = []) {
     } // end of class Blackbox extends Intention
 
     for ( let intentionClass of intentions ) {
-        Blackbox.addAction(intentionClass)
+        PlanningIntention.addAction(intentionClass)
     }
 
-    return Blackbox;
+    return {PlanningIntention};
 }
 
 
@@ -129,4 +142,4 @@ function blackboxGenerator (intentions = []) {
 
 
 
-module.exports = blackboxGenerator
+module.exports = setup

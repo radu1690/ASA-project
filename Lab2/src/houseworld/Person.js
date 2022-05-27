@@ -12,8 +12,8 @@ class Person extends Observable {
     }
     moveTo (to) {
         if ( this.house.rooms[this.in_room].doors_to.includes(to) ) { // for object: to in this.house.rooms[this.in_room].doors_to
-            console.log(this.name, '\t moved from', this.in_room, 'to', to)
             this.in_room = to
+            console.log(this.name, '\t moved from', this.in_room, 'to', to)
             return true
         }
         else {
