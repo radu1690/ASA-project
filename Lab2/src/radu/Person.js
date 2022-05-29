@@ -1,15 +1,38 @@
 const Observable =  require('../utils/Observable')
 const Television = require('./devices/Television')
+const {Activities, Rooms} = require('./data');
+const Room = require('./Room');
+const House = require('./House');
 class Person extends Observable {
+
+    /** @type {Room} */
+    in_room;
+
+    /**
+     * 
+     * @param {House} house 
+     * @param {String} name 
+     * @param {Room} room 
+     */
     constructor (house, name, room) {
         super();
         this.house = house; // reference to the house
         this.name = name; // non-observable
-        this.set('in_room', room) // observable
-        this.set('activity', 'awake') //observable [awake, sleeping, watching_television]
+        this.in_room = room;
+        //this.set('in_room', room) // observable
+        this.set('activity', Activities.AWAKE) //observable [awake, sleeping, watching_television, awake]
     }
     //moving between multiple rooms?
+    /**
+     * Updates the location of the person. Activity must be 'awake'
+     * @param {Room} to 
+     * @returns 
+     */
     moveTo (to) {
+        if(this.activity != Activities.AWAKE){
+            console.log(`${this.name} is away and cannot perform any action inside the house`);
+            return;
+        }
         //console.log(`from: ${this.in_room.name}   to: ${to}`)
         let map = this.house.map;
         let path = map.getPath(this.in_room.name, to.name);
@@ -41,11 +64,31 @@ class Person extends Observable {
         }
     }
 
+    /**
+     * Sets the activity to SLEEP. Person must not be away
+     * @returns 
+     */
     sleep(){
-        this.activity = "sleeping";
+        if(this.activity == Activities.AWAY){
+            console.log(`${this.name} is away and cannot perform any action inside the house`);
+            return;
+        }
+        
+        this.activity = Activities.SLEEP;
+        this.in_room.people_sleeping++;
+
         console.log(`${this.name} started sleeping in room ${this.in_room.name}`);
     }
+
+    /**
+     * Sets the activity WATCHING_TELEVISION. Person must not be away
+     * @returns 
+     */
     watch_television(){
+        if(this.activity == Activities.AWAY){
+            console.log(`${this.name} is away and cannot perform any action inside the house`);
+            return;
+        }
         let found = false;
         for(let device of Object.entries(this.in_room.devices)){
             /*
@@ -64,39 +107,79 @@ class Person extends Observable {
             }
         }
         if(found){
-            this.activity = "watching_television";
+            this.activity = Activities.WATCHING_TELEVISION;
+            this.in_room.people_watching_tv++;
             console.log(`${this.name} started watching television in room ${this.in_room.name}`);
         }else{
             console.log(`${this.name} failed starting watching television in room ${this.in_room.name}`);
         }
         
     }
+    /**
+     * Sets the activity to AWAKE. Person must not be away
+     * @returns 
+     */
     idle(){
-        this.activity = "awake";
+        if(this.activity == Activities.AWAY){
+            console.log(`${this.name} is away and cannot perform any action inside the house`);
+            return;
+        }
+        if(this.activity == Activities.SLEEP){
+            this.in_room.people_sleeping--;
+        }else if(this.activity == Activities.WATCHING_TELEVISION){
+            this.in_room.people_watching_tv--;
+            console.log(this.in_room.people_watching_tv)
+        }
+        this.activity = Activities.AWAKE;
         console.log(`${this.name} is awake in room ${this.in_room.name}`);
+    }
+
+    /**
+     * Sets the activity to AWAY and updates the room
+     * @returns 
+     */
+    leaveHouse(){
+        if(this.activity == Activities.AWAY){
+            console.log(`${this.name} is away and cannot perform any action inside the house`);
+            return;
+        }
+        // if(this.in_room != Rooms.ENTRANCE){
+        //     console.log(`${this.name} can't leave the house because he is not at the entrance (location is ${this.in_room})`);
+        //     return;
+        // }
+        updateLeftRoom(this, this.in_room);
+        this.in_room = null;
+        this.activity = Activities.AWAY;
+        console.log(`${this.name} left the house`)
+    }
+    
+    /**
+     * Sets the activity to AWAKE and updates the entrance room
+     */
+    enterHouse(){
+        if(this.activity != Activities.AWAY){
+            console.log(`${this.name} is already in the house`);
+            return;
+        }
+        this.activity = Activities.AWAKE;
+        this.in_room = this.house.rooms[Rooms.ENTRANCE];
+        updateEnteredRoom(this, this.in_room);
+        console.log(`${this.name} entered the house`)
     }
 }
 
 function updateEnteredRoom(person, room){
-    //console.log(`${room.name} before ENTER: ${room.people_inside.length}`)
-    //room.people_inside.push(person);
-    //console.log(`${room.name} after ENTER: ${room.people_inside.length}`)
 
     room.people_inside++;
 }
 
 function updateLeftRoom(person, room){
-    //console.log(`${room.name} before LEFT: ${room.people_inside.length}`)
-    // for(i=0; i<room.people_inside.length; i++){
-    //     if(room.people_inside[i] == person){
-    //         room.people_inside.splice(i, 1);
-    //         break;
-    //     }
-    // }
-    //console.log(`${room.name} after LEFT: ${room.people_inside.length}`)
-
     room.people_inside--;
 }
+
+
+
+
 
 module.exports = Person
     

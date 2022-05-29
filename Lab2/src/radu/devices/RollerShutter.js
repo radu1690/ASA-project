@@ -1,4 +1,5 @@
-const Observable =  require('../../utils/Observable')
+const Observable =  require('../../utils/Observable');
+const { Shutter } = require('../data');
 
 
 class RollerShutter extends Observable {
@@ -6,21 +7,21 @@ class RollerShutter extends Observable {
         super();
         this.house = house; // reference to the house
         this.name = name; // non-observable
-        this.set('status', 'up') // observable
+        this.set('position', Shutter.UP) // observable
         
     }
     setUp () {
-        this.status = 'up'
+        this.position = Shutter.UP
         // Include some messages logged on the console!
         console.log(`${this.name} set up`)
     }
     setHalf () {
-        this.status = 'half'
+        this.position = Shutter.HALF
         // Include some messages logged on the console!
         console.log(`${this.name} set half`)
     }
     setDown () {
-        this.status = 'down'
+        this.position = Shutter.DOWN
         // Include some messages logged on the console!
         console.log(`${this.name} set down`)
     }

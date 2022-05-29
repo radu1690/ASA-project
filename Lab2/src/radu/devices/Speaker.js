@@ -1,23 +1,11 @@
-const Observable =  require('../../utils/Observable')
+const Device = require('./Device');
 
-
-class Speaker extends Observable {
+class Speaker extends Device {
     constructor (house, name) {
-        super()
-        this.house = house; // reference to the house
-        this.name = name; // non-observable
-        this.set('status', 'off') // observable
+        super(house, name)
+        this.power_consumption = 10; //non-observable
     }
-    switchOnSpeaker () {
-        this.status = 'on'
-        // Include some messages logged on the console!
-        console.log(`${this.name} turned on`)
-    }
-    switchOffSpeaker () {
-        this.status = 'off'
-        // Include some messages logged on the console!
-        console.log(`${this.name} turned off`)
-    }
+    
     notify(message){
         console.log(`${this.name} notification: ${message}`);
     }

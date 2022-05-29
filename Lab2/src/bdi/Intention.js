@@ -94,7 +94,8 @@ class Intention {
             }
 
             // Always wait for a timer to avoid stopping the event loop within microtask queue!
-            await new Promise( res => setTimeout(res, 0))
+            //await new Promise( res => setTimeout(res, 0))
+            
             // this.log('press any key to continue')
             // await keypress()
         }

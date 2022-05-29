@@ -1,66 +1,104 @@
 const Clock = require('../../utils/Clock');
-const Observable =  require('../../utils/Observable')
+const Observable =  require('../../utils/Observable');
+const { Filling, Status, WashingStatus } = require('../data');
+const House = require('../House');
 
+/**
+ * @typedef {{ hh: number, mm: number }} Time
+ */
 
-class Washing_machine extends Observable {
+class WashingDevice extends Observable {
+
+    /**@type {House} */
+    house;
+    /**@type {String} */
+    name;
+    /**@type {Boolean} */
+    consuming;
+
+    /**
+     * 
+     * @param {House} house 
+     * @param {String} name 
+     */
     constructor (house, name) {
         super()
         this.house = house; // reference to the house
         this.name = name; // non-observable
         //status: [off, washing, finished, paused]
-        this.set('status', 'off') // observable 
+        this.set('status', WashingStatus.OFF) // observable 
         //filling: [empty, half, half_full, full]
-        this.set('filling', 'empty')
-        this.power_consumption = 600; //non-observable
+        this.set('filling', Filling.EMPTY)
+        this.power_consumption = 0; //non-observable
         this.consuming = false;
-        // this.time_remaining = {
-        //     hh : 2,
-        //     mm : 0
-        // }
-        
     }
+
+    /**
+     * Starts a washing cycle which will automatically finish after the given time.
+     * The default time is 2 hours.
+     * @param {Time} washing_time 
+     */
     startWashing (washing_time = {hh: 2, mm:0}) {
-        this.status = 'washing'
+        this.status = WashingStatus.WASHING;
         this.updateConsumption(true);
         this.time_remaining = washing_time;
         // Include some messages logged on the console!
         this.wash();
-        console.log(`${this.name} started washing cycle`);
+        console.log(`${this.name} started washing cycle (${this.time_remaining.hh} hours and ${this.time_remaining.mm} minutes remaining)`);
     }
 
+    /**
+     * Pauses the washing cycle and saving the remaining time.
+     */
     pause () {
-        this.status = 'paused'
+        this.status = WashingStatus.PAUSED;
         this.updateConsumption(false);
         // Include some messages logged on the console!
         this.stopWashing();
         console.log(`${this.name} paused`)
     }
+
+    /**
+     * Resumes the washing cycle with the remaining time.
+     */
     resume () {
-        this.status = 'washing'
+        this.status = WashingStatus.WASHING;
         this.updateConsumption(true);
         // Include some messages logged on the console!
         this.wash();
-        console.log(`${this.name} resumed washing cycle`)
+        console.log(`${this.name} resumed washing cycle (${this.time_remaining.hh} hours and ${this.time_remaining.mm} minutes remaining)`)
         
     }
+
+    /**
+     * Finishes the washing cycle and updates it's status.
+     */
     finish () {
-        this.status = 'finished'
+        this.status = WashingStatus.FINISHED;
         this.updateConsumption(false);
         // Include some messages logged on the console!
         this.stopWashing();
         console.log(`${this.name} finished`)
     }
+
+    /**
+     * Turns off the device.
+     */
     switchOff () {
-        this.status = 'off'
+        this.status = WashingStatus.OFF;
         this.updateConsumption(false);
-        this.filling = 'empty';
+        this.filling = Filling.EMPTY;
         // Include some messages logged on the console!
         this.stopWashing();
         console.log(`${this.name} switched off`)
     }
-    //updates the power consumption of the house according to the state of the washing machine
-    //consuming: washing
-    //not consuming: off, finished, paused
+    
+    /**
+     * Updates the power consumption of the house according to the state of the washing device
+     * consuming: washing
+     * not consuming: off, finished, paused
+     * @param {*} switchingOn 
+     */
     updateConsumption(switchingOn){
         let previuous_consuming = this.consuming;
         if(switchingOn){
@@ -76,16 +114,22 @@ class Washing_machine extends Observable {
         }
     }
 
+    /**
+     * Increases the filling property by 1 step untill full
+     */
     increaseFilling(){
-        if(this.filling == 'empty'){
-            this.filling = 'half';
-        }else if(this.filling == 'half'){
-            this.filling = 'half_full';
-        }else if(this.filling == 'half_full'){
-            this.filling = 'full';
+        if(this.filling == Filling.EMPTY){
+            this.filling = Filling.HALF;
+        }else if(this.filling == Filling.HALF){
+            this.filling = Filling.HALF_FULL;
+        }else if(this.filling == Filling.HALF_FULL){
+            this.filling = Filling.FULL;
         }
     }
 
+    /**
+     * Computes the remaining time of the washing cycle
+     */
     computeTime(){
         if(this.time_remaining.mm > 0){
             this.time_remaining.mm = this.time_remaining.mm - 15 ;
@@ -97,6 +141,9 @@ class Washing_machine extends Observable {
         }
     }
     
+    /**
+     * Sets the observer in order to compute the remaining time.
+     */
     wash(){
         Clock.global.observe('mm',() => {
             this.computeTime();
@@ -106,12 +153,15 @@ class Washing_machine extends Observable {
                 this.finish();
                 this.switchOff();
             }
-        }, 'washing_cycle')
+        }, `${this.name} wash_cycle`)
     }
 
+    /**
+     * Removes the observer
+     */
     stopWashing(){
-        Clock.global.unobserve('mm', null, 'washing_cycle');
+        Clock.global.unobserve('mm', null, `${this.name} wash_cycle`);
     }
 }
 
-module.exports = Washing_machine
+module.exports = WashingDevice

@@ -31,7 +31,7 @@ class PowerSensor extends Sensor {
 
     deactivateSensor(){
         this.log(`${this.name} de-activated`)
-        this.house.utilities.electricity.observe('consumption', null, this.name);
+        this.house.utilities.electricity.unobserve('consumption', null, this.name);
     }
 }
 

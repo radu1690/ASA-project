@@ -1,6 +1,7 @@
 const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
 const House = require("../House");
+const { Status } = require("../data");
 
 class LightSensor extends Sensor {
 
@@ -36,7 +37,7 @@ class LightSensor extends Sensor {
                     
                     device[1].observe('status', (status, k) =>{
                         this.log(device[1].name, 'turned', status);
-                        this.agent.beliefs.declare('light_on '+device[1].name, status=='on')
+                        this.agent.beliefs.declare('light_on '+device[1].name, status==Status.ON)
                         //console.log(counter)
                     }, this.name)
                 }

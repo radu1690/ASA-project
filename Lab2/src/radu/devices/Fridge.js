@@ -1,48 +1,33 @@
-const Observable =  require('../../utils/Observable')
+const Observable =  require('../../utils/Observable');
+const Device = require('./Device');
 
 
-class Fridge extends Observable {
+class Fridge extends Device {
+    /** @type {Number} */
+    supplies;
     constructor (house, name) {
-        super()
-        this.house = house; // reference to the house
-        this.name = name; // non-observable
+        super(house, name)
         this.set('supplies', 100) // observable
-        this.power_consumption = 130; //non-observable
-        this.set('status', 'off')
-        
-        
+        this.power_consumption = 130; 
     }
-    addSupplies (percent) {
-        if(this.supplies + percent > 100){
-            console.log(`${this.name}: Failed to add ${percent}% supplies (current supplies are ${this.supplies})`)
-            return;
-        }
+
+    
+    addSupplies (percent) {    
         this.supplies += percent;
-        // Include some messages logged on the console!
+        if(this.supplies > 100){
+            this.supplies = 100;
+        }
         console.log(`${this.name} added ${percent}% supplies (total is ${this.supplies}%`)
     }
     removeSupplies (percent) {
-        if(this.supplies - percent < 0){
-            console.log(`${this.name}: Failed to remove ${percent}% supplies (current supplies are ${this.supplies})`)
-            return;
-        }
         this.supplies -= percent;
-        // Include some messages logged on the console!
+        if(this.supplies < 0){
+            this.supplies = 0;
+        }
         console.log(`${this.name} removed ${percent}% supplies (total is ${this.supplies}%`)
     }
-    switchOn(){
-        if(this.status == 'off'){
-            this.house.utilities.electricity.consumption += this.power_consumption;
-        }
-        console.log(`${this.name} switched on`)
-    }
-
-    switchOff(){
-        if(this.status == 'on'){
-            this.house.power_consumption -= this.power_consumption;
-        }
-        console.log(`${this.name} switched off`)
-    }
+    
+    
 }
 
 module.exports = Fridge

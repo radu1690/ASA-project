@@ -30,11 +30,8 @@ class PresenceSensor extends Sensor {
     deactivateSensor(){
         console.log(`${this.name} de-activated`)
         for (let room of Object.values(this.house.rooms)){
-            for(let device of Object.entries(room.devices)){
-                if(device[1].constructor.name == "Light"){
-                    device[1].unobserve('status', null, this.name)
-                }
-            }
+            room.unobserve('people_inside', null, this.name)
+            
         }
     }
 }

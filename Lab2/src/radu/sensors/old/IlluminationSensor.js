@@ -1,6 +1,6 @@
-const Goal = require('../../bdi/Goal');
-const Intention = require('../../bdi/Intention');
-const Room = require('./../Room')
+const Goal = require('../../../bdi/Goal');
+const Intention = require('../../../bdi/Intention');
+const Room = require('../../Room')
 
 
 class SenseIlluminationsGoal extends Goal {

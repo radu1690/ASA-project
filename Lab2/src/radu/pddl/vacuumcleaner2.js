@@ -107,10 +107,14 @@ const world = new Agent('world');
         }
         *exec ({goal}=parameters) {
             let goalAchieved = yield this.agent.postSubGoal( goal )
-            if (goalAchieved)
-                {console.log(goal)
-                console.log("The house has been cleaned!");
-                return;}
+            if (goalAchieved){
+                    console.log(goal.parameters.goal)
+                    for(let param of goal.parameters.goal){
+                        let room = param.split(" ")[1];
+                        console.log(room)
+                    }
+                    console.log("The house has been cleaned!");
+                    return;}
             
         }
     }
@@ -141,7 +145,7 @@ const world = new Agent('world');
                 'clean wc1', 'clean wc2', 'clean room1', 'clean room2', 'clean room3'] } ) } ) ) // try to achieve the PlanningGoal for 4 times
     }
 
-    
+    //module.exports = {CleanGoal, CleanGoalIntention};
 }
 
 
@@ -175,3 +179,4 @@ world.beliefs.declare('connected room3 corridor');
 // world.beliefs.declare('clean corridor');
 world.beliefs.declare('clean kitchen');
 // world.beliefs.declare('clean living_room');
+
