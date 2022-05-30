@@ -21,9 +21,9 @@ class SunIlluminationSensor extends Sensor {
         this.log(`${this.name} activated`)
         this.house.observe('sun_illumination', (illumination, k)=>{
             this.log('Sun illumination  changed: ' + illumination);
-            this.agent.beliefs.declare('sun_illumination_low ', illumination==Illumination.LOW)
-            this.agent.beliefs.declare('sun_illumination_normal ', illumination==Illumination.NORMAL)
-            this.agent.beliefs.declare('sun_illumination_high ', illumination==Illumination.HIGH)
+            this.agent.beliefs.declare('sun_illumination_low house', illumination==Illumination.LOW)
+            this.agent.beliefs.declare('sun_illumination_normal house', illumination==Illumination.NORMAL)
+            this.agent.beliefs.declare('sun_illumination_high house', illumination==Illumination.HIGH)
         }, this.name)
     }
 

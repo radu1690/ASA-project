@@ -128,7 +128,7 @@ class Person extends Observable {
             this.in_room.people_sleeping--;
         }else if(this.activity == Activities.WATCHING_TELEVISION){
             this.in_room.people_watching_tv--;
-            console.log(this.in_room.people_watching_tv)
+            //console.log(this.in_room.people_watching_tv)
         }
         this.activity = Activities.AWAKE;
         console.log(`${this.name} is awake in room ${this.in_room.name}`);

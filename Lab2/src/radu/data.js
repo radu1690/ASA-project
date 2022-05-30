@@ -31,7 +31,7 @@ Object.freeze(People);
 
 const Illumination = {
     LOW: 'low',
-    NORMAL: 'low',
+    NORMAL: 'normal',
     HIGH: 'high'
 };
 Object.freeze(Illumination);
@@ -65,4 +65,27 @@ const WashingStatus = {
 }
 Object.freeze(WashingStatus);
 
-module.exports = {Activities, Rooms, People, Illumination, Status, Shutter, Filling, WashingStatus};
+const Facts = {
+    DEVICES: {
+        ON: 'device_on'
+    },
+    ROOM: {
+        PEOPLE_INSIDE: 'people_inside',
+        PEOPLE_SLEEPING: 'people_sleeping',
+        PEOPLE_WATCHING_TELEVISION: 'people_watching_tv',
+        LIGHT_NEEDED: 'light_needed'
+    },
+    SHUTTER: {
+        UP: 'shutter_up',
+        HALF: 'shutter_half',
+        DOWN: 'shutter_down'
+    }, 
+    ILLUMINATION: {
+        LOW: 'sun_illumination_low',
+        NORMAL: 'sun_illumination_normal',
+        HIGH: 'sun_illumination_high'
+    }
+}
+Object.freeze(Facts);
+
+module.exports = {Activities, Rooms, People, Illumination, Status, Shutter, Filling, WashingStatus, Facts};

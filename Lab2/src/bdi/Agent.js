@@ -81,7 +81,7 @@ class Agent {
 
         }
         
-        this.log('No success in achieving goal', subGoal.toString())
+        //this.log('No success in achieving goal', subGoal.toString())
         return Promise.resolve(false) // different from: return false; which would reject the promise!!!
         // throw new Error('No success in achieving goal'); // Promise rejection with explicit error. This should always be catched outside!
     

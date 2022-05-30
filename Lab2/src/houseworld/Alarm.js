@@ -16,11 +16,11 @@ class AlarmIntention extends Intention {
     static applicable(goal) {
         return goal instanceof AlarmGoal
     }
-    *exec(){
+    async *exec(){
         while(true) {
-            Clock.global.notifyChange('mm')
-            if (Clock.global.hh == this.goal.hh) this.log('ALARM' + Clock.global.mm)
-                yield
+            await Clock.global.notifyChange('mm')
+            // if (Clock.global.hh == this.goal.hh) this.log('ALARM' + Clock.global.mm)
+            //     yield
             if (Clock.global.hh == this.goal.hh) {
                 // Log a message!
                 this.log('ALARM, it\'s 6am!')

@@ -34,16 +34,17 @@ class Goal extends Observable {
     }
       
     toString () {
-        function replacer(key, mayBeGoal) {
-            // Filtering out properties
-            if (mayBeGoal instanceof Goal) {
-                let j = {}
-                j[mayBeGoal.constructor.name + '#'+mayBeGoal.id] = mayBeGoal.parameters
-                return j
-            }
-            return mayBeGoal;
-        }
-        return JSON.stringify(this).replace(/\"([^(\")"]+)\":/g,"$1:")
+        // function replacer(key, mayBeGoal) {
+        //     // Filtering out properties
+        //     if (mayBeGoal instanceof Goal) {
+        //         let j = {}
+        //         j[mayBeGoal.constructor.name + '#'+mayBeGoal.id] = mayBeGoal.parameters
+        //         return j
+        //     }
+        //     return mayBeGoal;
+        // }
+        // return JSON.stringify(this).replace(/\"([^(\")"]+)\":/g,"$1:")
+        return (this.constructor.name);
     }
 
     // get precondition () {

@@ -75,7 +75,7 @@ class House extends Observable {
                     room3_television: new Television(this, 'room3_television'),
                     room3_roller_shutter: new RollerShutter(this, 'room3_roller_shutter')
                 }, [Rooms.CORRIDOR, Rooms.BALCONY], []),
-            balcony : new Room(this, Rooms.BALCONY, {balcony_light: new Light(this, 'balcony_light', 1)}, [Rooms.KITCHEN, Rooms.LIVING_ROOM, Rooms.ROOM1, Rooms.ROOM2, Rooms.ROOM3], []),
+            balcony : new Room(this, Rooms.BALCONY, {balcony_light: new Light(this, 'balcony_light', 2)}, [Rooms.KITCHEN, Rooms.LIVING_ROOM, Rooms.ROOM1, Rooms.ROOM2, Rooms.ROOM3], []),
         }
 
 

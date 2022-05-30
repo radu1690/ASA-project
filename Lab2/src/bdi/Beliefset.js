@@ -95,7 +95,8 @@ class Beliefset extends Observable { // Implementation based on Observable
         for ( let literal of literals ) {
             let not = literal.split(' ')[0] == 'not'
             let fact = (not?literal.split(' ').splice(1).join(' '):literal)
-            
+            // console.log(fact)
+            // console.log(this[fact])
             if ( this[fact] )
                 if ( not )
                     return false;

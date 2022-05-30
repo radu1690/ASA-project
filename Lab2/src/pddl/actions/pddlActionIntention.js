@@ -28,6 +28,15 @@ class pddlActionIntention extends Intention {
         return pddlActionIntention.ground(this.constructor.precondition, this.goal.parameters)
     }
 
+    // set precondition(p){
+    //     //console.log(this.constructor.precondition)
+    //     //console.log(p)
+    //     this.constructor.precondition = p
+    //     console.log(this.constructor.precondition)
+    // }
+
+    
+
     checkPrecondition () {
         return this.agent.beliefs.check(...this.precondition);
     }

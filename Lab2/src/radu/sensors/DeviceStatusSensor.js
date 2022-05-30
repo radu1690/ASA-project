@@ -1,7 +1,8 @@
 const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
 const House = require("../House");
-const { Status } = require("../data");
+const { Status, Facts } = require("../data");
+const Device = require("../devices/Device");
 
 class LightSensor extends Sensor {
 
@@ -12,7 +13,7 @@ class LightSensor extends Sensor {
      */
     constructor(agent, house) {
         super(agent, house);
-        this.name = 'LightSensor';
+        this.name = 'DeviceStatuSensor';
         this.activateSensor();  
     }
 
@@ -32,12 +33,12 @@ class LightSensor extends Sensor {
                 ]
                 */
                //console.log(device[1].constructor.name)
-                if(device[1].constructor.name == "Light"){
+                if(device[1] instanceof Device){
                     //counter++;
                     
                     device[1].observe('status', (status, k) =>{
                         this.log(device[1].name, 'turned', status);
-                        this.agent.beliefs.declare('light_on '+device[1].name, status==Status.ON)
+                        this.agent.beliefs.declare(`${Facts.DEVICES.ON} `+device[1].name, status==Status.ON)
                         //console.log(counter)
                     }, this.name)
                 }
@@ -49,7 +50,7 @@ class LightSensor extends Sensor {
         console.log(`${this.name} de-activated`)
         for (let room of Object.values(this.house.rooms)){
             for(let device of Object.entries(room.devices)){
-                if(device[1].constructor.name == "Light"){
+                if(device[1] instanceof Device ){
                     device[1].unobserve('status', null, this.name)
                 }
             }
