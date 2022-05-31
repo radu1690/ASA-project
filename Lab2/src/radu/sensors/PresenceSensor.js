@@ -2,6 +2,7 @@ const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
 const House = require("../House");
 
+//TODO delete file
 class PresenceSensor extends Sensor {
 
     /**

@@ -62,9 +62,17 @@ class WashingDevice extends Observable {
      * Resumes the washing cycle with the remaining time.
      */
     resume () {
+        //should not happen
+        if(this.time_remaining == null){
+            if(this.filling==Filling.FULL || this.filling==Filling.HALF_FULL){
+                this.time_remaining = {hh: 2, mm:0}
+            }else{
+                this.time_remaining = {hh: 0, mm:0}
+            }
+            
+        }
         this.status = WashingStatus.WASHING;
         this.updateConsumption(true);
-        // Include some messages logged on the console!
         this.wash();
         console.log(`${this.name} resumed washing cycle (${this.time_remaining.hh} hours and ${this.time_remaining.mm} minutes remaining)`)
         
@@ -85,9 +93,10 @@ class WashingDevice extends Observable {
      * Turns off the device.
      */
     switchOff () {
+        this.filling = Filling.EMPTY;
         this.status = WashingStatus.OFF;
         this.updateConsumption(false);
-        this.filling = Filling.EMPTY;
+        
         // Include some messages logged on the console!
         this.stopWashing();
         console.log(`${this.name} switched off`)

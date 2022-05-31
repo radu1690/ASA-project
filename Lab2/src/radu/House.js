@@ -12,7 +12,7 @@ const WashingMachine = require('./devices/WashingMachine')
 const Television = require('./devices/Television')
 const Speaker = require('./devices/Speaker');
 const VacuumCleaner = require('./devices/VacuumCleaner');
-const {Activities, Rooms, People, Illumination} = require('./data');
+const {Activities, Rooms, People, Illumination, WashingDevices} = require('./data');
 
 class House extends Observable {
     utilities;
@@ -41,7 +41,7 @@ class House extends Observable {
                     //kitchen_lights_2: new Light(this, 'kitchen_lights_2', 2),
                     kitchen_roller_shutter: new RollerShutter(this, 'kitchen_roller_shutter'),
                     kitchen_fridge: new Fridge(this, 'kitchen_fridge'),
-                    kitchen_dishwasher: new Dishwasher(this, 'kitchen_dishwasher'),
+                    kitchen_dishwasher: new Dishwasher(this, WashingDevices.DISHWASHER),
                     kitchen_oven: new Oven(this, 'kitchen_oven'),
                     kitchen_speaker: new Speaker(this, 'kitchen_speaker')
                 },[Rooms.BALCONY], [Rooms.ENTRANCE, Rooms.LIVING_ROOM]),
@@ -56,7 +56,7 @@ class House extends Observable {
             wc1 : new Room(this, Rooms.WC1, 
                 {
                     wc1_light: new Light(this, 'wc1_light', 1),
-                    wc1_washing_machine: new WashingMachine(this, 'wc1_washing_machine')
+                    wc1_washing_machine: new WashingMachine(this, WashingDevices.WASHINGMACHINE)
                 }, [Rooms.CORRIDOR], []),
             wc2 : new Room(this, Rooms.WC2, {wc2_light: new Light(this, 'wc2_light', 1)}, [Rooms.CORRIDOR], []),
             room1 : new Room(this, Rooms.ROOM1, 

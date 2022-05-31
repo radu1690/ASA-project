@@ -3,6 +3,9 @@ const Agent = require('../../bdi/Agent')
 const Goal = require('../../bdi/Goal')
 const Intention = require('../../bdi/Intention')
 const PlanningGoal = require('../../pddl/PlanningGoal')
+const House = require('../House')
+const VacuumCleaner = require('../devices/VacuumCleaner')
+const Room = require('../Room')
 
 /**
  * Robot agents
@@ -16,6 +19,9 @@ const PlanningGoal = require('../../pddl/PlanningGoal')
             // console.log("Moving in " + to)
             // console.log(to)
             //console.log(this.agent.rooms)
+            // if(this.checkPrecondition()){
+            //     console.log("VIOLATION")
+            // }
             this.agent.robot.moveTo(this.agent.rooms[to]);
         }
     }
@@ -26,6 +32,9 @@ const PlanningGoal = require('../../pddl/PlanningGoal')
         static effect = [['clean', 'room'] ];
         *exec ({room}=parameters) {
             //console.log("Sucking " + room)
+            // if(!this.checkPrecondition()){
+            //     console.log("VIOLATION")
+            // }
             this.agent.robot.cleanRoom();
         }
     }
@@ -58,6 +67,12 @@ const PlanningGoal = require('../../pddl/PlanningGoal')
     }
 
     class RobotCleaner extends Agent {
+        /** @type {Room[]} */
+        rooms;
+        /** @type {VacuumCleaner} */
+        robot;
+
+        
         constructor(name, house, robot){
             super(name);
             this.rooms = house.rooms;

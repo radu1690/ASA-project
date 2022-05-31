@@ -1,9 +1,10 @@
+const { Power } = require('../data');
 const Device = require('./Device');
 
 class Television extends Device {
     constructor (house, name) {
         super(house, name)
-        this.power_consumption = 100;
+        this.power_consumption = Power.TELEVISION;
           
     }
 }

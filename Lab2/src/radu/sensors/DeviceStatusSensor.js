@@ -1,10 +1,11 @@
 const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
 const House = require("../House");
-const { Status, Facts } = require("../data");
+const { Status, Facts, WashingStatus } = require("../data");
 const Device = require("../devices/Device");
+const WashingDevice = require("../devices/WashingDevice");
 
-class LightSensor extends Sensor {
+class DeviceStatusSensor extends Sensor {
 
     /**
      * 
@@ -40,7 +41,18 @@ class LightSensor extends Sensor {
                         this.log(device[1].name, 'turned', status);
                         this.agent.beliefs.declare(`${Facts.DEVICES.ON} `+device[1].name, status==Status.ON)
                         //console.log(counter)
-                    }, this.name)
+                    }, this.name+'normal_device')
+                }else if(device[1] instanceof WashingDevice){
+                    device[1].observe('status', (status, k) => {
+                        this.log(device[1].name, 'status', status);
+                        this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.OFF} `+device[1].name, status==WashingStatus.OFF)
+                        this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.PAUSED} `+device[1].name, status==WashingStatus.PAUSED)
+                        this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.WASHING} `+device[1].name, status==WashingStatus.WASHING)
+
+                        if(status == WashingStatus.FINISHED){
+                            this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.FINISHED} `+device[1].name, true)
+                        }
+                    }, this.name+'washing_device');
                 }
             }
         }
@@ -51,11 +63,13 @@ class LightSensor extends Sensor {
         for (let room of Object.values(this.house.rooms)){
             for(let device of Object.entries(room.devices)){
                 if(device[1] instanceof Device ){
-                    device[1].unobserve('status', null, this.name)
+                    device[1].unobserve('status', null, this.name+'normal_device')
+                }else if(device[1] instanceof WashingDevice){
+                    device[1].observe('status', null, this.name+'washing_device');
                 }
             }
         }
     }
 }
 
-module.exports = LightSensor;
+module.exports = DeviceStatusSensor;

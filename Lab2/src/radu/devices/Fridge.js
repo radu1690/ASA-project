@@ -1,4 +1,5 @@
 const Observable =  require('../../utils/Observable');
+const { Power } = require('../data');
 const Device = require('./Device');
 
 
@@ -8,7 +9,7 @@ class Fridge extends Device {
     constructor (house, name) {
         super(house, name)
         this.set('supplies', 100) // observable
-        this.power_consumption = 130; 
+        this.power_consumption = Power.FRIDGE; 
     }
 
     

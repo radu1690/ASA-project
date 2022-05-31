@@ -1,4 +1,4 @@
-(define (domain vacuum)
+(define (domain a1)
   (:predicates (clean ?room)
                (location ?room)
                (connected ?room1 ?room2))

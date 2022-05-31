@@ -1,6 +1,7 @@
 const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
 const House = require("../House");
+const { Power, Facts, WashingDevices } = require("../data");
 
 class PowerSensor extends Sensor {
 
@@ -12,7 +13,7 @@ class PowerSensor extends Sensor {
     constructor(agent, house) {
         super(agent, house);
         this.name = 'PowerSensor';
-        this.limit = 2500;
+        this.limit = Power.LIMIT;
 
         this.activateSensor();
     }
@@ -21,11 +22,19 @@ class PowerSensor extends Sensor {
         this.log(`${this.name} activated`)
         this.house.utilities.electricity.observe('consumption', (power, k)=>{
             this.log('Global power consumption  changed: ' + power + ' watts');
+
+            //check if it's exceeding power limit
             if(power >= this.limit){
-                this.agent.beliefs.declare("exceeded_power", true);
+                this.agent.beliefs.declare(Facts.POWER, true);
             }else{
-                this.agent.beliefs.declare("exceeded_power", false);
+                this.agent.beliefs.declare(Facts.POWER, false);
             }
+
+            //check if washing machine and/or dishwasher can start staying withing power limit
+            let can_start_wm = (power + Power.WASHINGMACHINE < this.limit);
+            let can_start_d = (power + Power.DISHWASHER < this.limit);
+            this.agent.beliefs.declare(`${Facts.DEVICES.CAN_START} ${WashingDevices.WASHINGMACHINE}`, can_start_wm);
+            this.agent.beliefs.declare(`${Facts.DEVICES.CAN_START} ${WashingDevices.DISHWASHER}`, can_start_d);
         }, this.name)
     }
 

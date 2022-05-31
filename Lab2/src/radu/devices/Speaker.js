@@ -1,9 +1,10 @@
+const { Power } = require('../data');
 const Device = require('./Device');
 
 class Speaker extends Device {
     constructor (house, name) {
         super(house, name)
-        this.power_consumption = 10; //non-observable
+        this.power_consumption = Power.SPEAKER; //non-observable
     }
     
     notify(message){

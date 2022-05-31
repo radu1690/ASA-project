@@ -1,6 +1,7 @@
 const Agent = require('../../bdi/Agent')
 const Goal = require('../../bdi/Goal')
 const PlanningGoal =  require('../../pddl/actions/pddlActionGoal')
+const pddlActionIntention = require('../../pddl/actions/pddlActionIntention')
 const PlanningIntention =  require('../../pddl/actions/pddlActionIntention')
 const { Facts } = require('../data')
 
@@ -37,7 +38,7 @@ const { Facts } = require('../data')
                 yield this.agent.beliefs.notifyAnyChange();
                 let condition = pddlActionIntention.ground(this.constructor.p1, this.goal.parameters)
                 if(this.agent.beliefs.check(...condition)){
-                    this.goal.parameters.shutter.setDown();
+                    this.goal.parameters.shutter.setHalf();
                     //reschedule next goal
                     this.agent.postSubGoal(this.goal);
                     break;
@@ -45,7 +46,7 @@ const { Facts } = require('../data')
                     condition = pddlActionIntention.ground(this.constructor.p2, this.goal.parameters)
                     //console.log(this.precondition)
                     if(this.agent.beliefs.check(...condition)){
-                        this.goal.parameters.shutter.setDown();
+                        this.goal.parameters.shutter.setHalf();
                         //reschedule next goal
                         this.agent.postSubGoal(this.goal);
                         break;

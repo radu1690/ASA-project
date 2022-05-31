@@ -67,13 +67,18 @@ Object.freeze(WashingStatus);
 
 const Facts = {
     DEVICES: {
-        ON: 'device_on'
+        ON: 'device_on',
+        CAN_START : 'can_start',
+        READY_TO_START: 'ready_to_start',
+        READY_TO_RESUME: 'ready_to_resume',
+        WASHING: 'washing'
     },
     ROOM: {
         PEOPLE_INSIDE: 'people_inside',
         PEOPLE_SLEEPING: 'people_sleeping',
         PEOPLE_WATCHING_TELEVISION: 'people_watching_tv',
-        LIGHT_NEEDED: 'light_needed'
+        LIGHT_NEEDED: 'light_needed',
+        NOONE_WATCHING_TELEVISION: 'noone_watching_tv'
     },
     SHUTTER: {
         UP: 'shutter_up',
@@ -84,8 +89,41 @@ const Facts = {
         LOW: 'sun_illumination_low',
         NORMAL: 'sun_illumination_normal',
         HIGH: 'sun_illumination_high'
-    }
+    },
+    WASHINGSTATUS: {
+        OFF : 'device_off',
+        WASHING: 'device_washing',
+        FINISHED: 'device_finished',
+        PAUSED: 'device_paused'
+    },
+    POWER : 'exceeded_power',
+    DISCOUNT_TIME: 'discount_time'
 }
 Object.freeze(Facts);
 
-module.exports = {Activities, Rooms, People, Illumination, Status, Shutter, Filling, WashingStatus, Facts};
+const Observable = {
+    PEOPLE_INSIDE : 'people_inside',
+    PEOPLE_SLEEPING: 'people_sleeping',
+    PEOPLE_WATCHING_TELEVISION: 'people_watching_tv'
+}
+Object.freeze(Observable);
+
+const Power = {
+    DISHWASHER: 1300,
+    FRIDGE: 130,
+    LIGHT: 15,
+    OVEN: 1600,
+    SPEAKER: 10,
+    TELEVISION: 100,
+    WASHINGMACHINE: 600,
+    LIMIT: 2200
+}
+Object.freeze(Power);
+
+const WashingDevices = {
+    WASHINGMACHINE : 'wc1_washing_machine',
+    DISHWASHER : 'kitchen_dishwasher'
+}
+Object.freeze(WashingDevices);
+
+module.exports = {Activities, Rooms, People, Illumination, Status, Shutter, Filling, WashingStatus, Facts, Observable, Power, WashingDevices};

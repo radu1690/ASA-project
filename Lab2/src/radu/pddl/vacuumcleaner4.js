@@ -83,8 +83,8 @@ const world = new Agent('world');
 {
     class Move extends pddlActionIntention {
         static parameters = ['from', 'to'];
-        static precondition = [ ['location', 'from'], ['connected', 'from', 'to']];
-        static effect = [['not location', 'from'], ['location', 'to'] ];
+        static precondition = [ ];
+        static effect = [];
         *exec ({from, to}=parameters) {
             yield world.move({from, to, robot: this.agent.name})
         }
@@ -97,6 +97,7 @@ const world = new Agent('world');
         *exec ({room}=parameters) {
             yield world.suck({room, robot: this.agent.name})
         }
+        
     }
 
 
@@ -137,7 +138,7 @@ const world = new Agent('world');
     {
         let a1 = new Agent('a1')
         world.beliefs.observeAny( sensor(a1) )
-        let {OnlinePlanning} = require('../../pddl/OnlinePlanner')([Suck, Move])
+        let {OnlinePlanning} = require('../../pddl/OnlinePlanner2')([Move, Suck])
         a1.intentions.push(OnlinePlanning)
         a1.intentions.push(CleanGoalIntention)
         
