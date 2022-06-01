@@ -37,30 +37,28 @@ const { Facts } = require('../data')
     }
 
 
-    class ResumeWashingMachineGoal extends Goal {}
+    class NotifyLowSuppliesGoal extends Goal {}
 
-    class ResumeWashingMachineIntention extends PlanningIntention {
+    class NotifyLowSuppliesIntention extends PlanningIntention {
 
-        static parameters = ['w', 'd']
-        static precondition = [ [`${Facts.DISCOUNT_TIME}`], [`${Facts.DEVICES.READY_TO_RESUME}`, 'w'], [`${Facts.DEVICES.CAN_START}`, 'w'],
-                [`not ${Facts.DEVICES.WASHING}`, 'd']]
-        //static effect = [ [`${Facts.DEVICES.ON}`, 'l']]
-        
+        static parameters = ['f']
+        static precondition = [ [`${Facts.DEVICES.LOW_SUPPLIES}`, 'f'], [`${Facts.DEVICES.NEED_TO_NOTIFY}`, 'f']]
+        static effect = [[`not ${Facts.DEVICES.NEED_TO_NOTIFY}`, 'f']]
         static applicable (goal) {
-            return ( goal instanceof ResumeWashingMachineGoal)
+            return ( goal instanceof NotifyLowSuppliesGoal)
         }
         
         *exec () {
-            //let room = this.goal.parameters.room;
-            this.goal.parameters.w = this.goal.parameters.washing_machine.name;
-            this.goal.parameters.d = this.goal.parameters.dishwasher.name;
+            let device = this.goal.parameters.device;
+
+            this.goal.parameters.f = device.name;
             while(true){
                 yield this.agent.beliefs.notifyAnyChange();
-                
                 if(this.checkPrecondition()){
-                    //console.log("Achiveded goal TurnOnLight in room: "+this.goal.parameters.room.name);
-                    //this.applyEffect();
-                    this.goal.parameters.washing_machine.resume();
+                    
+                    this.goal.parameters.speaker.notify(`${device.name} is running out of supplies!`);
+                    //need to apply the effect because no device will negate this fact
+                    this.applyEffect();
                     //reschedule next goal
                     this.agent.postSubGoal(this.goal);
                     break;
@@ -71,4 +69,4 @@ const { Facts } = require('../data')
 
     
 
-module.exports = {NotificationWashingDeviceGoal, NotificationWashingDeviceIntention};
+module.exports = {NotificationWashingDeviceGoal, NotificationWashingDeviceIntention, NotifyLowSuppliesGoal, NotifyLowSuppliesIntention};

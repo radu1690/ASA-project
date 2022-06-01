@@ -71,7 +71,9 @@ const Facts = {
         CAN_START : 'can_start',
         READY_TO_START: 'ready_to_start',
         READY_TO_RESUME: 'ready_to_resume',
-        WASHING: 'washing'
+        WASHING: 'washing',
+        NEED_TO_NOTIFY: 'neet_to_notify',
+        LOW_SUPPLIES: 'low_supplies'
     },
     ROOM: {
         PEOPLE_INSIDE: 'people_inside',

@@ -14,20 +14,20 @@ const SunIlluminationSensor = require('./sensors/SunIlluminationSensor')
 const VacuumCleanerSensor = require('./sensors/VacuumCleanerSensor')
 const { CleanGoal, RobotCleaner} = require('./pddl/vacuumcleaner3')
 const PlanningGoal = require('../pddl/PlanningGoal')
-const { SwitchOnLightGoal , SwitchOnLightIntention, SwitchOffLightGoal, SwitchOffLightIntention} = require('./goals/SwitchOnLightGoal')
+const { SwitchOnLightGoal , SwitchOnLightIntention, SwitchOffLightGoal, SwitchOffLightIntention} = require('./goals/LightGoals')
 const Light = require('./devices/Light')
 const RollerShutter = require('./devices/RollerShutter')
-const { SetShutterUpGoal, SetShutterUpIntention } = require('./goals/SetShutterUpGoal')
+const { SetShutterUpGoal, SetShutterUpIntention, SetShutterHalfGoal, SetShutterHalfIntention, SetShutterDownGoal, SetShutterDownIntention} = require('./goals/RollerShutterGoals')
 const Television = require('./devices/Television')
 const ShutterSensor = require('./sensors/ShutterSensor')
-const { SetShutterHalfIntention, SetShutterHalfGoal } = require('./goals/SetShutterHalfGoal')
-const { SetShutterDownGoal, SetShutterDownIntention } = require('./goals/SetShutterDownGoal')
-const { SwitchOffTelevisionGoal, SwitchOffTelevisionIntention } = require('./goals/SwitchOffTelevisionGoal')
+const { SwitchOffTelevisionGoal, SwitchOffTelevisionIntention } = require('./goals/TelevisionGoals')
 const WashingDeviceSensor = require('./sensors/WashingDeviceSensor')
 const { WashingStatus, Rooms } = require('./data')
 const { StartWashingMachineGoal, StartWashingMachineIntention, ResumeWashingMachineGoal, ResumeWashingMachineIntention, PauseWashingMachineIntention, PauseWashingMachineGoal } = require('./goals/WashingMachineGoals')
 const { StartDishwasherIntention, ResumeDishwasherIntention, PauseDishwasherIntention, StartDishwasherGoal, ResumeDishwasherGoal, PauseDishwasherGoal } = require('./goals/DishWasherGoals')
-const { NotificationWashingDeviceIntention, NotificationWashingDeviceGoal } = require('./goals/NotificationGoals')
+const { NotificationWashingDeviceIntention, NotificationWashingDeviceGoal, NotifyLowSuppliesGoal, NotifyLowSuppliesIntention } = require('./goals/NotificationGoals')
+const FridgeSensor = require('./sensors/FridgeSensor')
+const { VacuumCleanerAgent } = require('./pddl/VacuumCleanerAgent')
 var house = new House()
 
 //house.people.john.observe('in_room', (v, k)=>console.log('in_room John ' + v.name) )
@@ -66,7 +66,7 @@ Clock.global.observe('mm', (key, mm) => {
         // house.people.john.moveTo(house.rooms.living_room)
     }
     if(time.hh==8 && time.mm==0){
-        
+        house.rooms.kitchen.devices.kitchen_fridge.removeSupplies(80);
         // house.people.john.watch_television()
     }
     if(time.hh==11 && time.mm==15){
@@ -79,6 +79,7 @@ Clock.global.observe('mm', (key, mm) => {
         // house.rooms.kitchen.devices.kitchen_dishwasher.startWashing();
     }
     if(time.hh==12 && time.mm==0){
+        house.rooms.kitchen.devices.kitchen_fridge.addSupplies(30);
         //house.rooms.wc1.devices.wc1_washing_machine.startWashing();
         //house.people.john.leaveHouse();
         house.people.john.moveTo(house.rooms.corridor)
@@ -91,8 +92,8 @@ Clock.global.observe('mm', (key, mm) => {
         //house.people.john.enterHouse();
         // house.people.john.moveTo(house.rooms.living_room)
         // house.people.john.watch_television();
-        // vacuumCleanerAgent.postSubGoal( new PlanningGoal( { goal: ['clean kitchen', 'clean entrance', 'clean living_room', 'clean corridor',
-        //              'clean wc1', 'clean wc2', 'clean room1', 'clean room2', 'clean room3'] } ) )
+        vacuumCleanerAgent.postSubGoal( new PlanningGoal( { goal: ['clean kitchen', 'clean entrance', 'clean living_room', 'clean corridor',
+                     'clean wc1', 'clean wc2', 'clean room1', 'clean room2', 'clean room3', 'battery_10'] } ) )
     }
     if(time.hh==15 && time.mm==30){
         //setSunIlluminationNormal()
@@ -130,7 +131,7 @@ Clock.global.observe('mm', (key, mm) => {
 
 // Agents
 var houseAgent = new Agent('houseAgent');
-//var vacuumCleanerAgent = new RobotCleaner('vacuumCleanerAgent', house, house.vaccumCleaner);
+var vacuumCleanerAgent = new VacuumCleanerAgent('vacuumCleanerAgent', house, house.vaccumCleaner);
 //Sensors
 var deviceStatusSensor = new DeviceStatusSensor(houseAgent, house);
 var activitySensor = new ActivitySensor(houseAgent, house);
@@ -138,9 +139,9 @@ var powerSensor = new PowerSensor(houseAgent, house);
 
 var sunIlluminationSensor = new SunIlluminationSensor(houseAgent, house);
 var shutterSensor = new ShutterSensor(houseAgent, house);
-// var vacuumCleanerSensor = new VacuumCleanerSensor(vacuumCleanerAgent, house);
+var vacuumCleanerSensor = new VacuumCleanerSensor(vacuumCleanerAgent, house);
 var washingDeviceSensor = new WashingDeviceSensor(houseAgent, house);
-
+var suppliesSensor = new FridgeSensor(houseAgent, house);
 //var presenceSensor = new PresenceSensor(houseAgent, house);
 
 houseAgent.intentions.push(SwitchOnLightIntention);
@@ -156,13 +157,15 @@ houseAgent.intentions.push(StartDishwasherIntention);
 houseAgent.intentions.push(ResumeDishwasherIntention);
 houseAgent.intentions.push(PauseDishwasherIntention);
 houseAgent.intentions.push(NotificationWashingDeviceIntention);
- addSwitchLightsOnGoals();
+houseAgent.intentions.push(NotifyLowSuppliesIntention);
+// addSwitchLightsOnGoals();
 // addShutterUpGoals();
 // addTvGoal();
 
 let d = house.rooms.kitchen.devices.kitchen_dishwasher;
 let wm = house.rooms.wc1.devices.wc1_washing_machine;
 let s = house.rooms.kitchen.devices.kitchen_speaker;
+let f = house.rooms.kitchen.devices.kitchen_fridge;
 houseAgent.beliefs.declare(`windowless ${Rooms.CORRIDOR}`, true);
 houseAgent.beliefs.declare(`windowless ${Rooms.WC1}`, true);
 houseAgent.postSubGoal(new StartWashingMachineGoal({washing_machine: wm, dishwasher: d }));
@@ -173,6 +176,7 @@ houseAgent.postSubGoal(new ResumeDishwasherGoal({washing_machine: wm, dishwasher
 houseAgent.postSubGoal(new PauseDishwasherGoal({washing_machine: wm, dishwasher: d}));
 houseAgent.postSubGoal(new NotificationWashingDeviceGoal({device: wm, speaker: s}));
 houseAgent.postSubGoal(new NotificationWashingDeviceGoal({device: d, speaker: s}));
+houseAgent.postSubGoal(new NotifyLowSuppliesGoal({device: f, speaker: s}));
 function addSwitchLightsOnGoals(){
     for(let room of Object.entries(house.rooms)){
         for(let device of Object.entries(room[1].devices)){

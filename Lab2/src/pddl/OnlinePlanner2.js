@@ -30,15 +30,16 @@ function setup (intentions = []) {
             return goal instanceof PlanningGoal
         }
 
-        async doPlan (domainFile, problemFile) {
-
+        async doPlan (problemFile) {
+            // console.log(domainFile)
+            // console.log(problemFile.content)
             // console.log(JSON.stringify( {domain: domainFile.content, problem: problemFile.content} ))
             var res = await fetch("http://solver.planning.domains/solve", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify( {domain: domainFile, problem: problemFile.content} )
+                body: JSON.stringify( {domain: this.agent.domain, problem: problemFile.content} )
             }).then(function (res) {
                 return res.json();
             }).then(function (res) {
@@ -89,8 +90,8 @@ function setup (intentions = []) {
 
         *exec () {
             
-            var pddlDomain = new PddlDomain(this.agent.name)
-            pddlDomain.addAction(...Object.values(this.constructor.actions))
+            //for some reason it won't load the beliefs into the problem file if pddlDomain.saveToFile() is not called
+            var pddlDomain = new PddlDomain(null)
             var domainFile = yield pddlDomain.saveToFile()
 
             var pddlProblem = new PddlProblem(this.agent.name)
@@ -98,12 +99,8 @@ function setup (intentions = []) {
             pddlProblem.addInit(...this.agent.beliefs.entries.filter( ([fact,value])=>value ).map( ([fact,value])=>fact ))//(...this.agent.beliefs.literals)
             pddlProblem.addGoal(...this.goal.parameters.goal)
             var problemFile = yield pddlProblem.saveToFile()
-            const data = fs.readFileSync('./vacuum_domain.pddl', 'utf8')
-            console.log(data)
-            //put the domain file inside the agent
-            //make data = this.agent.domain
-
-            yield this.doPlan(data, pddlProblem)
+            
+            yield this.doPlan(pddlProblem)
 
             var previousStepGoals = []
 
@@ -114,7 +111,7 @@ function setup (intentions = []) {
                 else {
                     yield Promise.all(previousStepGoals)
                     previousStepGoals = []
-                    this.log('Starting sequential step ' + step.intention.toString())
+                    //this.log('Starting sequential step ' + step.intention.toString())
                 }
                 previousStepGoals.push(
                     step.intention.run().catch( err => {

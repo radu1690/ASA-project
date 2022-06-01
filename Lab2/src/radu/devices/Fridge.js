@@ -4,8 +4,7 @@ const Device = require('./Device');
 
 
 class Fridge extends Device {
-    /** @type {Number} */
-    supplies;
+    
     constructor (house, name) {
         super(house, name)
         this.set('supplies', 100) // observable
@@ -18,14 +17,14 @@ class Fridge extends Device {
         if(this.supplies > 100){
             this.supplies = 100;
         }
-        console.log(`${this.name} added ${percent}% supplies (total is ${this.supplies}%`)
+        console.log(`${this.name} added ${percent}% supplies (remaining is ${this.supplies}%)`)
     }
     removeSupplies (percent) {
         this.supplies -= percent;
         if(this.supplies < 0){
             this.supplies = 0;
         }
-        console.log(`${this.name} removed ${percent}% supplies (total is ${this.supplies}%`)
+        console.log(`${this.name} removed ${percent}% supplies (remaining is ${this.supplies}%)`)
     }
     
     

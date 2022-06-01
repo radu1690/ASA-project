@@ -87,7 +87,7 @@ class House extends Observable {
         this.rooms.room3.people_inside=1;
         this.rooms.living_room.people_inside = 1;
         this.rooms.kitchen.devices.kitchen_fridge.switchOn();
-        this.vaccumCleaner = new VacuumCleaner(this, 'VacuumCleanerRobot', this.rooms.wc2);
+        this.vaccumCleaner = new VacuumCleaner(this, 'VacuumCleanerRobot', this.rooms.wc1, this.rooms.wc1);
         
         
         this.setAutoSunIllumination();
