@@ -1,6 +1,10 @@
 const fs = require('fs');
 const readline = require('readline');
 
+//input file: app.log
+//output file: output.log
+//need to modify clock.js file to make it work
+
 async function processLineByLine() {
   
   const fileStream = fs.createReadStream('app.log');

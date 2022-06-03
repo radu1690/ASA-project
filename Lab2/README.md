@@ -1,29 +1,44 @@
-# Assignment 2 (Radu Loghin 229368)
-This is the first implementation of my scenario. All the new files are in the folder src/myworld/.  
-All the rooms and all the devices have been added along with some sensors. The output log will be a little verbose because all the sensors and all the devices are logging for now.  
-A simulation can be executed with "node src/myworld/scenario.js"
+# Final Project 2 (Radu Loghin 229368)
+This is the final delivery for the Autonomous Software Agents project. 
+First run ```npm install``` to install all dependencies.  
+
+The main scenario can be executed with:  ```node src/project/scenarios/main_Scenario.js ```  
+
+There are 3 other additional scenarios where specific goals can be tested.
+
 ## Devices
-All devices have been added by extending the observable class:
-* Light
-* Roller_shutter
-* Dishwasher
-* Washing_machine
-* Television
-* Speaker
-* Oven
-* Fridge
+There are two type of devices: (normal) device and washing device (both extend the Observable class). Washing devices have specific methods which simulate a washing cycle.
+* ```Device``` Light
+* ```Device``` Roller_shutter
+* ```WashingDevice``` Dishwasher
+* ```WashingDevice``` Washing_machine
+* ```Device``` Television
+* ```Device``` Speaker
+* ```Device``` Oven
+* ```Device``` Fridge
 
 ## Sensors
-The sensors are created by extending Intention/goal classes like in the provided example of light.
-* LightSensor (same as the example)
-* IlluminationSensor (detects changes  sunIllumination of a room)
-* ActivitySensor (detects changes of the  activity of a person, for now either sleeping, awake, watching_television)
-* PresenceSensor (detects if there is someone in a room)
-* PowerSensor (detects changes on the global power consumption of the house)
+Sensors observe the world and update the beliefs of the agents:
+* ```ActivitySensor``` observes the people of the hosue
+* ```DeviceStatusSensor``` observes the status of devices
+* ```FridgeSensor``` keeps track of the supplies of the fridge
+* ```PowerSensor``` observes the global power consumption and checks if a washing device is safe to start
+* ```ShutterSensor``` observes the status of the roller shutters
+* ```SunIlluminationSensor``` observes the illumination from the outside 
+* ```VacuumCleanerSensor``` checks if rooms are clean, the location of the vacuum cleaner robot and its battery status
+* ```WashingDeviceSensor``` checks if washing devices are ready to begin/resume a washing cycle
 
 ## Other classes
-* House 
-* Room (every room has a reference to its devices)
-* Person
-* scenario (main file)
-* map (this class is used to detect a path when moving between rooms, still need to understand if we need to simulate the movement between multiple rooms)
+* ```House``` here all the rooms and devices are initialized 
+* ```Room``` 
+* ```Person```
+* ```map``` this class is used to check the correct movement of the vacuum cleaner robot
+* ```data``` contains the configuration of power consumption for each device. It contains also all the facts which are used by the agents.
+
+## Goals
+* ```LightGoals``` turn on/off the lights
+* ```ShutterGoals``` set the shutters up/half/down
+* ```TelevisionGoals``` switch off the television when not needed
+* ```WashingMachineGoals``` start/resume/pause the washing machine
+* ```DishWasherGoals``` start/resume/pause the dishwasher
+* ```NotificationGoals``` notify when a washing device finished and when the supplies of the fridge are low
