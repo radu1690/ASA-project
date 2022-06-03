@@ -49,10 +49,18 @@ class Clock {
                 }
             }
             
-            // Here, time is logged immediately before any other observable gets updated!
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
-            process.stdout.write( Clock.format() + '\t');
+            if (process.stdout.isTTY) {
+                // Here, time is logged immediately before any other observable gets updated!
+                process.stdout.clearLine(1);
+                process.stdout.cursorTo(0);
+                process.stdout.write( Clock.format() + '\t');
+            }
+            else {
+                // Here, time is logged immediately before any other observable gets updated!
+                //readline.clearLine(process.stdout, 1);
+                //readline.cursorTo(process.stdout, 0, null);
+                process.stdout.write( Clock.format() + '\n');
+            }
         }
     }
 

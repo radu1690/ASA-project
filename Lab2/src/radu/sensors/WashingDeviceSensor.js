@@ -36,6 +36,10 @@ class WashingDeviceSensor extends Sensor {
                 this.agent.beliefs.declare(`${Facts.DEVICES.READY_TO_RESUME} ${device.name}`, ready_to_resume);
 
                 this.agent.beliefs.declare(`${Facts.DEVICES.WASHING} ${device.name}`, device.status == WashingStatus.WASHING);
+                
+                if(status == WashingStatus.FINISHED){
+                    this.agent.beliefs.declare(`${Facts.DEVICES.FINISHED} `+device.name, true)
+                }
             }, `washing_device status ${device.name}`)
         }
 
@@ -62,10 +66,27 @@ class WashingDeviceSensor extends Sensor {
         
     }
 
-    // deactivateSensor(){
-    //     this.log(`${this.name} de-activated`)
-    //     this.house.utilities.electricity.unobserve('consumption', null, this.name);
-    // }
+    deactivateSensor(){
+        this.log(`${this.name} de-activated`)
+
+        let washing_machine = this.house.rooms.wc1.devices.wc1_washing_machine;
+        let dishwasher = this.house.rooms.kitchen.devices.kitchen_dishwasher;
+        let devices = [];
+        devices.push(washing_machine, dishwasher);
+
+        //status
+        for(let device of devices){
+            device.unobserve('status', null, `washing_device status ${device.name}`)
+        }
+
+        //check when filling changes
+        for(let device of devices){
+            device.unobserve('filling', null, `washing_device filling ${device.name}`)
+        }
+
+        //check if it's a good time to start a washing device
+        Clock.global.unobserve('hh', null, `${Facts.DISCOUNT_TIME}`)
+    }
 }
 
 module.exports = WashingDeviceSensor;

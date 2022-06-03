@@ -11,8 +11,10 @@ const { Facts } = require('../data')
     class SwitchOnLightIntention extends PlanningIntention {
 
         //precondition for windowed rooms
+        //not device_on light && light needed && sun illumination low
         static p1 = [ [`not ${Facts.DEVICES.ON}`, 'l'], [`${Facts.ROOM.LIGHT_NEEDED}`, 'r'], [`${Facts.ILLUMINATION.LOW}`, 'h']];
         //precondition for rooms without a window
+        //not device_on light && light_needed room && windowless room
         static p2 = [ [`not ${Facts.DEVICES.ON}`, 'l'], [`${Facts.ROOM.LIGHT_NEEDED}`, 'r'], [`windowless`, 'r']]
 
 
@@ -34,14 +36,9 @@ const { Facts } = require('../data')
                 let condition = pddlActionIntention.ground(this.constructor.p1, this.goal.parameters)
                 
                 if(this.agent.beliefs.check(...condition)){
-                    //console.log("Achiveded goal TurnOnLight in room: "+this.goal.parameters.room.name);
-                    //this.applyEffect();
+                    //no need to apply effect, the sensor will update the beliefset!
                     this.goal.parameters.light.switchOn();
                     //reschedule next goal
-
-                    //for power goal use: 
-                    // yield this.agent.beliefs.notifyAnyChange();
-                    // console.log("SWITCH LIGHT GOAL "+ this.goal.parameters.light.name)
                     this.agent.postSubGoal(this.goal);
                     break;
                 }else{
@@ -60,6 +57,8 @@ const { Facts } = require('../data')
 
     class SwitchOffLightIntention extends PlanningIntention {
 
+        //precondition to turn off the light:
+        //device_on light and not light_needed room
         static parameters = ['l', 'r', 'h']
         static precondition = [ [`${Facts.DEVICES.ON}`, 'l'], [`not ${Facts.ROOM.LIGHT_NEEDED}`, 'r']]
         static effect = [ [`not ${Facts.DEVICES.ON}`, 'l']]
@@ -69,15 +68,13 @@ const { Facts } = require('../data')
         }
         
         *exec () {
-            //let room = this.goal.parameters.room;
             this.goal.parameters.l = this.goal.parameters.light.name;
             this.goal.parameters.r = this.goal.parameters.room.name;
             this.goal.parameters.h = 'house'
             while(true){
                 yield this.agent.beliefs.notifyAnyChange();
                 if(this.checkPrecondition()){
-                    //console.log("Achiveded goal TurnOffLight in room: "+this.goal.parameters.room.name);
-                    //this.applyEffect();
+                    //no need to apply effect, the sensor will update the beliefset!
                     this.goal.parameters.light.switchOff();
                     //reschedule next goal
                     this.agent.postSubGoal(this.goal);

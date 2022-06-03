@@ -61,7 +61,7 @@ class Agent {
             if (!intentionClass.applicable(subGoal)) // By default applicable(goal) returns true (see class Intention)
                 continue; // if not applicable try next
     
-            this.log('Trying to use intention', intentionClass.name, 'to achieve goal', subGoal.toString())
+            //this.log('Trying to use intention', intentionClass.name, 'to achieve goal', subGoal.toString())
     
             var intention = new intentionClass(this, subGoal)
             

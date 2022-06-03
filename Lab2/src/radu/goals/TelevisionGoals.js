@@ -18,14 +18,11 @@ const { Facts } = require('../data')
         }
         
         *exec () {
-            //let room = this.goal.parameters.room;
             this.goal.parameters.t = this.goal.parameters.tv.name;
             this.goal.parameters.r = this.goal.parameters.room.name;
             while(true){
                 yield this.agent.beliefs.notifyAnyChange();
                 if(this.checkPrecondition()){
-                    //console.log("Achiveded goal TurnOffLight in room: "+this.goal.parameters.room.name);
-                    //this.applyEffect();
                     this.goal.parameters.tv.switchOff();
                     //reschedule next goal
                     this.agent.postSubGoal(this.goal);

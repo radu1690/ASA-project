@@ -42,17 +42,6 @@ class DeviceStatusSensor extends Sensor {
                         this.agent.beliefs.declare(`${Facts.DEVICES.ON} `+device[1].name, status==Status.ON)
                         //console.log(counter)
                     }, this.name+'normal_device')
-                }else if(device[1] instanceof WashingDevice){
-                    device[1].observe('status', (status, k) => {
-                        this.log(device[1].name, 'status', status);
-                        this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.OFF} `+device[1].name, status==WashingStatus.OFF)
-                        this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.PAUSED} `+device[1].name, status==WashingStatus.PAUSED)
-                        this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.WASHING} `+device[1].name, status==WashingStatus.WASHING)
-
-                        if(status == WashingStatus.FINISHED){
-                            this.agent.beliefs.declare(`${Facts.WASHINGSTATUS.FINISHED} `+device[1].name, true)
-                        }
-                    }, this.name+'washing_device');
                 }
             }
         }
@@ -64,8 +53,6 @@ class DeviceStatusSensor extends Sensor {
             for(let device of Object.entries(room.devices)){
                 if(device[1] instanceof Device ){
                     device[1].unobserve('status', null, this.name+'normal_device')
-                }else if(device[1] instanceof WashingDevice){
-                    device[1].observe('status', null, this.name+'washing_device');
                 }
             }
         }

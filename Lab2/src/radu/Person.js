@@ -1,6 +1,6 @@
 const Observable =  require('../utils/Observable')
 const Television = require('./devices/Television')
-const {Activities, Rooms} = require('./data');
+const {Activities, Rooms, Status} = require('./data');
 const Room = require('./Room');
 const House = require('./House');
 class Person extends Observable {
@@ -29,10 +29,12 @@ class Person extends Observable {
      * @returns 
      */
     moveTo (to) {
-        if(this.activity != Activities.AWAKE){
+        if(this.activity == Activities.AWAY){
             console.log(`${this.name} is away and cannot perform any action inside the house`);
             return;
         }
+        this.idle()
+
         //console.log(`from: ${this.in_room.name}   to: ${to}`)
         let map = this.house.map;
         let path = map.getPath(this.in_room.name, to.name);
@@ -73,6 +75,12 @@ class Person extends Observable {
             console.log(`${this.name} is away and cannot perform any action inside the house`);
             return;
         }
+        if(this.activity == Activities.SLEEP){
+            this.in_room.people_sleeping--;
+        }else if(this.activity == Activities.WATCHING_TELEVISION){
+            this.in_room.people_watching_tv--;
+            //console.log(this.in_room.people_watching_tv)
+        }
         
         this.activity = Activities.SLEEP;
         this.in_room.people_sleeping++;
@@ -89,20 +97,20 @@ class Person extends Observable {
             console.log(`${this.name} is away and cannot perform any action inside the house`);
             return;
         }
+        if(this.activity == Activities.SLEEP){
+            this.in_room.people_sleeping--;
+        }else if(this.activity == Activities.WATCHING_TELEVISION){
+            this.in_room.people_watching_tv--;
+            //console.log(this.in_room.people_watching_tv)
+        }
+
         let found = false;
         for(let device of Object.entries(this.in_room.devices)){
-            /*
-            device is like:
-            [
-                'tv_name',
-                Television{
-                    ...
-                }
-            ]
-            */
             if(device[1].constructor.name == "Television"){
                 found = true;
-                device[1].switchOn();
+                if(device[1].status != Status.ON){
+                    device[1].switchOn();
+                }
                 break;
             }
         }
@@ -130,8 +138,10 @@ class Person extends Observable {
             this.in_room.people_watching_tv--;
             //console.log(this.in_room.people_watching_tv)
         }
-        this.activity = Activities.AWAKE;
-        console.log(`${this.name} is awake in room ${this.in_room.name}`);
+        if(this.activity != Activities.AWAKE){
+            console.log(`${this.name} is awake in room ${this.in_room.name}`);
+        }
+        this.activity = Activities.AWAKE;     
     }
 
     /**
@@ -147,6 +157,12 @@ class Person extends Observable {
         //     console.log(`${this.name} can't leave the house because he is not at the entrance (location is ${this.in_room})`);
         //     return;
         // }
+        if(this.activity == Activities.SLEEP){
+            this.in_room.people_sleeping--;
+        }else if(this.activity == Activities.WATCHING_TELEVISION){
+            this.in_room.people_watching_tv--;
+            //console.log(this.in_room.people_watching_tv)
+        }
         updateLeftRoom(this, this.in_room);
         this.in_room = null;
         this.activity = Activities.AWAY;

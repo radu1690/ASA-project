@@ -4,6 +4,7 @@ const { Rooms } = require('./data');
 
 /**
  * This class is for checking that the movement of the vacuum cleaner robot is correct
+ * The initial idea was also to simulate movement of people between multiple rooms when needing to reach a room but was not implemented.
  */
 class HouseMap{
     //static graph = new Graph();

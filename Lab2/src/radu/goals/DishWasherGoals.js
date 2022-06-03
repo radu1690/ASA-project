@@ -25,15 +25,7 @@ const { Facts } = require('../data')
             while(true){
                 yield this.agent.beliefs.notifyAnyChange();
                 
-                //console.log('NOTIFY')
-                //console.log(this.precondition)
-                // if(this.checkPrecondition()){
-                //     console.log(this.precondition)
-                //     yield
-                // }
                 if(this.checkPrecondition()){
-                    //console.log("Achiveded goal TurnOnLight in room: "+this.goal.parameters.room.name);
-                    //this.applyEffect();
                     this.goal.parameters.dishwasher.startWashing();
                     //reschedule next goal
                     this.agent.postSubGoal(this.goal);
@@ -46,6 +38,7 @@ const { Facts } = require('../data')
 
     class ResumeDishwasherGoal extends Goal {}
 
+    
     class ResumeDishwasherIntention extends PlanningIntention {
 
         static parameters = ['w', 'd']
@@ -58,15 +51,12 @@ const { Facts } = require('../data')
         }
         
         *exec () {
-            //let room = this.goal.parameters.room;
             this.goal.parameters.w = this.goal.parameters.washing_machine.name;
             this.goal.parameters.d = this.goal.parameters.dishwasher.name;
             while(true){
                 yield this.agent.beliefs.notifyAnyChange();
                 
                 if(this.checkPrecondition()){
-                    //console.log("Achiveded goal TurnOnLight in room: "+this.goal.parameters.room.name);
-                    //this.applyEffect();
                     this.goal.parameters.dishwasher.resume();
                     //reschedule next goal
                     this.agent.postSubGoal(this.goal);
@@ -88,15 +78,11 @@ const { Facts } = require('../data')
         }
         
         *exec () {
-            //let room = this.goal.parameters.room;
-            //this.goal.parameters.w = this.goal.parameters.washing_machine.name;
             this.goal.parameters.d = this.goal.parameters.dishwasher.name;
             while(true){
                 yield this.agent.beliefs.notifyAnyChange();
                 
                 if(this.checkPrecondition()){
-                    //console.log("Achiveded goal TurnOnLight in room: "+this.goal.parameters.room.name);
-                    //this.applyEffect();
                     this.goal.parameters.dishwasher.pause();
                     //reschedule next goal
                     this.agent.postSubGoal(this.goal);

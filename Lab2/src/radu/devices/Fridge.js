@@ -12,17 +12,19 @@ class Fridge extends Device {
     }
 
     
-    addSupplies (percent) {    
-        this.supplies += percent;
-        if(this.supplies > 100){
+    addSupplies (percent) {
+        if(this.supplies + percent > 100){
             this.supplies = 100;
+        }else{
+            this.supplies += percent;
         }
         console.log(`${this.name} added ${percent}% supplies (remaining is ${this.supplies}%)`)
     }
     removeSupplies (percent) {
-        this.supplies -= percent;
-        if(this.supplies < 0){
+        if(this.supplies - percent < 0){
             this.supplies = 0;
+        }else{
+            this.supplies -= percent;
         }
         console.log(`${this.name} removed ${percent}% supplies (remaining is ${this.supplies}%)`)
     }

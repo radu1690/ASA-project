@@ -48,7 +48,7 @@ class WashingDevice extends Observable {
     }
 
     /**
-     * Pauses the washing cycle and saving the remaining time.
+     * Pauses the washing cycle (the remaining time is saved in the wash method).
      */
     pause () {
         this.status = WashingStatus.PAUSED;
@@ -62,8 +62,8 @@ class WashingDevice extends Observable {
      * Resumes the washing cycle with the remaining time.
      */
     resume () {
-        //should not happen
-        if(this.time_remaining == null){
+        //should not happen method pause is not used randomly in the scenario
+        if(this.time_remaining == null || (this.time_remaining.hh == 0 && this.time_remaining.mm ==0)){
             if(this.filling==Filling.FULL || this.filling==Filling.HALF_FULL){
                 this.time_remaining = {hh: 2, mm:0}
             }else{

@@ -13,6 +13,8 @@ const Television = require('./devices/Television')
 const Speaker = require('./devices/Speaker');
 const VacuumCleaner = require('./devices/VacuumCleaner');
 const {Activities, Rooms, People, Illumination, WashingDevices} = require('./data');
+const { HouseAgent } = require('./agents/HouseAgent');
+const { VacuumCleanerAgent } = require('./agents/VacuumCleanerAgent');
 
 class House extends Observable {
     utilities;
@@ -26,19 +28,19 @@ class House extends Observable {
 
     constructor () {
         super();
-        //this.sun_illumination = 'low';
         this.set('sun_illumination', Illumination.LOW)
         this.utilities = {
             electricity : new Observable( { consumption: 0 } )
         }
-        
+        //house plan to check correct movement of the vacuumcleaner
         this.map = new HouseMap();
 
+        //rooms and devices for each room
         this.rooms = {
             kitchen : new Room(this, Rooms.KITCHEN, 
                 {
                     kitchen_light: new Light(this, 'kitchen_light', 2),
-                    //kitchen_lights_2: new Light(this, 'kitchen_lights_2', 2),
+                    kitchen_light_2: new Light(this, 'kitchen_light_2', 2),
                     kitchen_roller_shutter: new RollerShutter(this, 'kitchen_roller_shutter'),
                     kitchen_fridge: new Fridge(this, 'kitchen_fridge'),
                     kitchen_dishwasher: new Dishwasher(this, WashingDevices.DISHWASHER),
@@ -47,7 +49,7 @@ class House extends Observable {
                 },[Rooms.BALCONY], [Rooms.ENTRANCE, Rooms.LIVING_ROOM]),
             living_room : new Room(this, Rooms.LIVING_ROOM,
                 {
-                    living_room_light: new Light(this, 'living_room_light', 2),
+                    living_room_light: new Light(this, 'living_room_light', 1),
                     living_room_television: new Television(this, 'living_room_television'),
                     living_room_roller_shutter: new RollerShutter(this, 'living_room_roller_shutter')
                 }, [Rooms.BALCONY], [Rooms.KITCHEN, Rooms.ENTRANCE]),
@@ -78,19 +80,28 @@ class House extends Observable {
             balcony : new Room(this, Rooms.BALCONY, {balcony_light: new Light(this, 'balcony_light', 2)}, [Rooms.KITCHEN, Rooms.LIVING_ROOM, Rooms.ROOM1, Rooms.ROOM2, Rooms.ROOM3], []),
         }
 
+        //vaccumCleaner robot
+        this.vaccumCleaner = new VacuumCleaner(this, 'VacuumCleanerRobot', this.rooms.wc1, this.rooms.wc1);
 
+        //Agents better to be inside scenario
+        // var houseAgent = new HouseAgent('houseAgent', this);
+        // var vacuumCleanerAgent = new VacuumCleanerAgent('vacuumCleanerAgent', this, this.vaccumCleaner);
+
+
+        this.setAutoSunIllumination();
+
+        //move this to scenarios
         this.people = {
-            john: new Person(this, People.JOHN, this.rooms.room3),
-            hannah: new Person(this, People.HANNAH, this.rooms.living_room)
+            // john: new Person(this, People.JOHN, this.rooms.room3),
+            // hannah: new Person(this, People.HANNAH, this.rooms.living_room)
         }
 
-        this.rooms.room3.people_inside=1;
-        this.rooms.living_room.people_inside = 1;
+        
         this.rooms.kitchen.devices.kitchen_fridge.switchOn();
-        this.vaccumCleaner = new VacuumCleaner(this, 'VacuumCleanerRobot', this.rooms.wc1, this.rooms.wc1);
+        this.rooms.kitchen.devices.kitchen_speaker.switchOn();
         
         
-        this.setAutoSunIllumination();
+        
     }
 
     /**

@@ -72,8 +72,9 @@ const Facts = {
         READY_TO_START: 'ready_to_start',
         READY_TO_RESUME: 'ready_to_resume',
         WASHING: 'washing',
-        NEED_TO_NOTIFY: 'neet_to_notify',
-        LOW_SUPPLIES: 'low_supplies'
+        NEED_TO_NOTIFY: 'need_to_notify',
+        LOW_SUPPLIES: 'low_supplies',
+        FINISHED: 'finished'
     },
     ROOM: {
         PEOPLE_INSIDE: 'people_inside',
@@ -92,12 +93,6 @@ const Facts = {
         NORMAL: 'sun_illumination_normal',
         HIGH: 'sun_illumination_high'
     },
-    WASHINGSTATUS: {
-        OFF : 'device_off',
-        WASHING: 'device_washing',
-        FINISHED: 'device_finished',
-        PAUSED: 'device_paused'
-    },
     POWER : 'exceeded_power',
     DISCOUNT_TIME: 'discount_time'
 }
@@ -111,14 +106,14 @@ const Observable = {
 Object.freeze(Observable);
 
 const Power = {
-    DISHWASHER: 1300,
+    DISHWASHER: 1400,
     FRIDGE: 130,
     LIGHT: 15,
     OVEN: 1600,
     SPEAKER: 10,
     TELEVISION: 100,
     WASHINGMACHINE: 600,
-    LIMIT: 2200
+    LIMIT: 2350
 }
 Object.freeze(Power);
 

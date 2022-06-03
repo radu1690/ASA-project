@@ -9,7 +9,8 @@ const { Facts } = require('../data')
     class SetShutterUpGoal extends Goal {}
 
     class SetShutterUpIntention extends PlanningIntention {
-
+        //precondition:
+        //no tv on && sun illumination normal && shutter not up
         static parameters = ['h', 's', 't']
         static precondition = [ [`not ${Facts.DEVICES.ON}`, 't'], [`${Facts.ILLUMINATION.NORMAL}`, 'h'], [`not ${Facts.SHUTTER.UP}`, 's']]
         static effect = [ [`${Facts.SHUTTER.UP}`, 's']]
@@ -47,7 +48,9 @@ const { Facts } = require('../data')
 
     class SetShutterHalfIntention extends PlanningIntention {
 
+        //tv off && sun illumination high && not shutter half
         static p1 = [ [`not ${Facts.DEVICES.ON}`, 't'], [`${Facts.ILLUMINATION.HIGH}`, 'h'], [`not ${Facts.SHUTTER.HALF}`, 's']]
+        //tv on && illumination normal && not shutter half
         static p2 = [ [`${Facts.DEVICES.ON}`, 't'], [`${Facts.ILLUMINATION.NORMAL}`, 'h'], [`not ${Facts.SHUTTER.HALF}`, 's']]
 
         static parameters = ['h', 's', 't']
@@ -97,7 +100,9 @@ const { Facts } = require('../data')
 
     class SetShutterDownIntention extends PlanningIntention {
 
+        //tv on and sun illumination high and not shutter down
         static p1 = [ [`${Facts.DEVICES.ON}`, 't'], [`${Facts.ILLUMINATION.HIGH}`, 'h'], [`not ${Facts.SHUTTER.DOWN}`, 's']]
+        //sun illumination low and not shutter down
         static p2 = [ [`${Facts.ILLUMINATION.LOW}`, 'h'], [`not ${Facts.SHUTTER.DOWN}`, 's']]
 
         static parameters = ['h', 's', 't']

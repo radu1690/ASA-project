@@ -2,20 +2,12 @@ const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
 const House = require("../House");
 const { Rooms } = require("../data");
-const { VacuumCleanerAgent } = require("../pddl/VacuumCleanerAgent");
 
 class VacuumCleanerSensor extends Sensor {
 
-    /**
-     * 
-     * @param {VacuumCleanerAgent} agent 
-     * @param {House} house 
-     */
+    
     constructor(agent, house) {
         super(agent, house);
-        if(!(agent instanceof VacuumCleanerAgent)){
-            throw new Error('Agent is not a VacuumCleanerAgent!');
-        }
         this.name = 'VacuumCleanerSensor';
         this.activateSensor();  
     }
@@ -53,6 +45,7 @@ class VacuumCleanerSensor extends Sensor {
 
             //observe battery_level
             this.agent.robot.observe('battery_level',(battery_level, k) => {
+                this.log(`battery_level: ${battery_level}`)
                 this.agent.beliefs.declare('battery_100 ', battery_level >= 100);
                 this.agent.beliefs.declare('battery_90 ', battery_level >= 90);
                 this.agent.beliefs.declare('battery_80 ', battery_level >= 80);

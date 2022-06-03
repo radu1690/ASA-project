@@ -62,7 +62,7 @@ class Intention {
      * @returns {Boolean}   true if success, otherwise false
      */
     async run () {
-        this.log('Intention started');
+        //this.log('Intention started');
 
         var iterator = this.exec(this.goal.parameters)
         var awaitedYield = null
@@ -94,7 +94,7 @@ class Intention {
             }
 
             // Always wait for a timer to avoid stopping the event loop within microtask queue!
-            //await new Promise( res => setTimeout(res, 0))
+            await new Promise( res => setTimeout(res, 0))
             
             // this.log('press any key to continue')
             // await keypress()

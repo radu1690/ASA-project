@@ -26,6 +26,7 @@ async function processLineByLine() {
   }
   
   fs.writeFileSync('output.log', output);
+  console.log('done')
 }
 
 processLineByLine();

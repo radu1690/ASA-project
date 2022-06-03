@@ -11,8 +11,8 @@ const { Facts } = require('../data')
     class NotificationWashingDeviceIntention extends PlanningIntention {
 
         static parameters = ['d']
-        static precondition = [ [`${Facts.WASHINGSTATUS.FINISHED}`, 'd']]
-        static effect = [[`not ${Facts.WASHINGSTATUS.FINISHED}`, 'd']]
+        static precondition = [ [`${Facts.DEVICES.FINISHED}`, 'd']]
+        static effect = [[`not ${Facts.DEVICES.FINISHED}`, 'd']]
         static applicable (goal) {
             return ( goal instanceof NotificationWashingDeviceGoal)
         }
@@ -55,7 +55,6 @@ const { Facts } = require('../data')
             while(true){
                 yield this.agent.beliefs.notifyAnyChange();
                 if(this.checkPrecondition()){
-                    
                     this.goal.parameters.speaker.notify(`${device.name} is running out of supplies!`);
                     //need to apply the effect because no device will negate this fact
                     this.applyEffect();

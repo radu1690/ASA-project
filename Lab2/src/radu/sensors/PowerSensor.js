@@ -26,6 +26,7 @@ class PowerSensor extends Sensor {
             //check if it's exceeding power limit
             if(power >= this.limit){
                 this.agent.beliefs.declare(Facts.POWER, true);
+                this.log('exceeding power limit!')
             }else{
                 this.agent.beliefs.declare(Facts.POWER, false);
             }

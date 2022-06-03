@@ -1,4 +1,4 @@
-const { Power } = require('../data');
+const { Power, Status } = require('../data');
 const Device = require('./Device');
 
 class Speaker extends Device {
@@ -8,7 +8,10 @@ class Speaker extends Device {
     }
     
     notify(message){
-        console.log(`${this.name} notification: ${message}`);
+        if(this.status == Status.ON){
+            console.log(`${this.name} notification: ${message}`);
+        }
+        
     }
 }
 
