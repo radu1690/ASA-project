@@ -2,7 +2,7 @@ const Agent = require('../../bdi/Agent')
 const Goal = require('../../bdi/Goal')
 const PlanningGoal =  require('../../pddl/actions/pddlActionGoal')
 const PlanningIntention =  require('../../pddl/actions/pddlActionIntention')
-const { Facts } = require('../data')
+const { Facts } = require('../utils/data')
 
 
     class StartWashingMachineGoal extends Goal {}

@@ -1,7 +1,7 @@
 const Observable =  require('../../utils/Observable')
 const Clock = require('../../utils/Clock');
 const WashingDevice = require('./WashingDevice');
-const { Power } = require('../data');
+const { Power } = require('../utils/data');
 
 class Dishwasher extends WashingDevice {
     constructor (house, name) {

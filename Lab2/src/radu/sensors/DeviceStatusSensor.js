@@ -1,7 +1,7 @@
 const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
-const House = require("../House");
-const { Status, Facts, WashingStatus } = require("../data");
+const House = require("../house/House");
+const { Status, Facts, WashingStatus } = require("../utils/data");
 const Device = require("../devices/Device");
 const WashingDevice = require("../devices/WashingDevice");
 

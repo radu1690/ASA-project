@@ -1,7 +1,7 @@
 const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
-const House = require("../House");
-const { Illumination } = require("../data");
+const House = require("../house/House");
+const { Illumination } = require("../utils/data");
 
 class SunIlluminationSensor extends Sensor {
 

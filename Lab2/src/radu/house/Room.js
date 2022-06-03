@@ -1,6 +1,6 @@
-const Clock = require('../utils/Clock');
-const Observable =  require('../utils/Observable');
-const Device = require('./devices/Device');
+const Clock = require('../../utils/Clock');
+const Observable =  require('../../utils/Observable');
+const Device = require('../devices/Device');
 const House = require('./House');
 
 /** */

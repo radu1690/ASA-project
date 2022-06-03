@@ -1,4 +1,4 @@
-const { Power, Status } = require('../data');
+const { Power, Status } = require('../utils/data');
 const Device = require('./Device');
 
 class Speaker extends Device {

@@ -1,5 +1,5 @@
 const Observable =  require('../../utils/Observable');
-const { Shutter } = require('../data');
+const { Shutter } = require('../utils/data');
 
 
 class RollerShutter extends Observable {

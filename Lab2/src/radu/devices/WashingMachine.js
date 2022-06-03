@@ -1,6 +1,6 @@
 const Clock = require('../../utils/Clock');
 const Observable =  require('../../utils/Observable');
-const { Power } = require('../data');
+const { Power } = require('../utils/data');
 const WashingDevice = require('./WashingDevice');
 
 

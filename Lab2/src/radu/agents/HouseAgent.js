@@ -1,5 +1,5 @@
 
-const House = require('../House')
+const House = require('../house/House')
 
 const DeviceStatusSensor = require('../sensors/DeviceStatusSensor')
 const ActivitySensor = require('../sensors/ActivitySensor')
@@ -18,7 +18,7 @@ const { StartDishwasherIntention, ResumeDishwasherIntention, PauseDishwasherInte
 const { NotificationWashingDeviceIntention, NotificationWashingDeviceGoal, NotifyLowSuppliesGoal, NotifyLowSuppliesIntention } = require('../goals/NotificationGoals')
 const FridgeSensor = require('../sensors/FridgeSensor');
 const Agent = require("../../bdi/Agent");
-const { Rooms } = require('../data')
+const { Rooms } = require('../utils/data')
 
 
 class HouseAgent extends Agent {

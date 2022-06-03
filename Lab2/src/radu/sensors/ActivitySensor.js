@@ -1,7 +1,7 @@
 const Agent = require("../../bdi/Agent");
 const Sensor = require("./Sensor");
-const House = require("../House");
-const { Facts, Observable } = require("../data");
+const House = require("../house/House");
+const { Facts, Observable } = require("../utils/data");
 
 /**
  * This sensor detects if there are people in a room and if they are all sleeping or watching tv

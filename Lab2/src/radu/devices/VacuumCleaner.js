@@ -1,4 +1,4 @@
-const Room = require('../Room');
+const Room = require('../house/Room');
 const Device = require('./Device');
 
 

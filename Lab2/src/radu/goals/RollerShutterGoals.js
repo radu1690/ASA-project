@@ -3,7 +3,7 @@ const Goal = require('../../bdi/Goal')
 const PlanningGoal =  require('../../pddl/actions/pddlActionGoal')
 const pddlActionIntention = require('../../pddl/actions/pddlActionIntention')
 const PlanningIntention =  require('../../pddl/actions/pddlActionIntention')
-const { Facts } = require('../data')
+const { Facts } = require('../utils/data')
 
 
     class SetShutterUpGoal extends Goal {}

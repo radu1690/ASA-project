@@ -1,7 +1,7 @@
 const Clock = require('../../utils/Clock');
 const Observable =  require('../../utils/Observable');
-const { Filling, Status, WashingStatus } = require('../data');
-const House = require('../House');
+const { Filling, Status, WashingStatus } = require('../utils/data');
+const House = require('../house/House');
 
 /**
  * @typedef {{ hh: number, mm: number }} Time

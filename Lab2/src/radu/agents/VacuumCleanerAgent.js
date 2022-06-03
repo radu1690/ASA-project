@@ -4,7 +4,7 @@ const Goal = require('../../bdi/Goal')
 const Intention = require('../../bdi/Intention')
 const PlanningGoal = require('../../pddl/PlanningGoal')
 const VacuumCleaner = require('../devices/VacuumCleaner')
-const Room = require('../Room')
+const Room = require('../house/Room')
 const fs = require('fs')
 const VacuumCleanerSensor = require('../sensors/VacuumCleanerSensor')
 

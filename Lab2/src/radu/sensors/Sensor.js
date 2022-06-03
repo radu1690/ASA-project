@@ -1,7 +1,7 @@
 const chalk = require("chalk");
 const Agent = require("../../bdi/Agent");
 const Observable = require("../../utils/Observable");
-const House = require("../House");
+const House = require("../house/House");
 
 class Sensor extends Observable {
 

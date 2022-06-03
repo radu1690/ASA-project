@@ -1,6 +1,6 @@
-const Observable =  require('../utils/Observable')
-const Television = require('./devices/Television')
-const {Activities, Rooms, Status} = require('./data');
+const Observable =  require('../../utils/Observable')
+const Television = require('../devices/Television')
+const {Activities, Rooms, Status} = require('../utils/data');
 const Room = require('./Room');
 const House = require('./House');
 class Person extends Observable {

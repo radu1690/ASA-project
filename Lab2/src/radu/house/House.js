@@ -1,20 +1,20 @@
 const Person = require('./Person');
-const Light = require('./devices/Light')
-const RollerShutter = require('./devices/RollerShutter');
+const Light = require('../devices/Light')
+const RollerShutter = require('../devices/RollerShutter');
 const Room = require('./Room');
-const Clock = require('../utils/Clock');
-const Observable =  require('../utils/Observable');
-const HouseMap = require('./map');
-const Fridge = require('./devices/Fridge');
-const Oven = require('./devices/Oven')
-const Dishwasher = require('./devices/Dishwasher')
-const WashingMachine = require('./devices/WashingMachine')
-const Television = require('./devices/Television')
-const Speaker = require('./devices/Speaker');
-const VacuumCleaner = require('./devices/VacuumCleaner');
-const {Activities, Rooms, People, Illumination, WashingDevices} = require('./data');
-const { HouseAgent } = require('./agents/HouseAgent');
-const { VacuumCleanerAgent } = require('./agents/VacuumCleanerAgent');
+const Clock = require('../../utils/Clock');
+const Observable =  require('../../utils/Observable');
+const HouseMap = require('../utils/map');
+const Fridge = require('../devices/Fridge');
+const Oven = require('../devices/Oven')
+const Dishwasher = require('../devices/Dishwasher')
+const WashingMachine = require('../devices/WashingMachine')
+const Television = require('../devices/Television')
+const Speaker = require('../devices/Speaker');
+const VacuumCleaner = require('../devices/VacuumCleaner');
+const {Activities, Rooms, People, Illumination, WashingDevices} = require('../utils/data');
+const { HouseAgent } = require('../agents/HouseAgent');
+const { VacuumCleanerAgent } = require('../agents/VacuumCleanerAgent');
 
 class House extends Observable {
     utilities;

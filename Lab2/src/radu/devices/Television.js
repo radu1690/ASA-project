@@ -1,4 +1,4 @@
-const { Power } = require('../data');
+const { Power } = require('../utils/data');
 const Device = require('./Device');
 
 class Television extends Device {

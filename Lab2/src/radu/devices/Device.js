@@ -1,6 +1,6 @@
 const Observable =  require('../../utils/Observable');
-const { Status } = require('../data');
-const House = require('../House');
+const { Status } = require('../utils/data');
+const House = require('../house/House');
 
 class Device extends Observable {
     /**@type {House} */
