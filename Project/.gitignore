@@ -7,9 +7,7 @@ node_modules/
 # private folder
 private
 
-# Temp
-tmp
-*.tmp
+
 
 # Logs
 logs
@@ -20,3 +18,6 @@ logs
 
 # binaries
 bin
+
+# log files
+*.log

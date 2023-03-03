@@ -1,0 +1,7 @@
+;; problem file: problem-vacuumCleanerAgent.pddl
+(define (problem vacuumCleanerAgent)
+    (:domain vacuumCleanerAgent)
+    (:objects wc1 kitchen balcony entrance living_room corridor wc2 room1 room2 room3 )
+	(:init (recharge_room wc1) (connected kitchen balcony) (connected kitchen entrance) (connected kitchen living_room) (connected living_room balcony) (connected living_room kitchen) (connected living_room entrance) (connected entrance corridor) (connected entrance kitchen) (connected entrance living_room) (connected corridor entrance) (connected corridor wc1) (connected corridor wc2) (connected corridor room1) (connected corridor room2) (connected corridor room3) (connected wc1 corridor) (connected wc2 corridor) (connected room1 corridor) (connected room1 balcony) (connected room2 corridor) (connected room2 balcony) (connected room3 corridor) (connected room3 balcony) (connected balcony kitchen) (connected balcony living_room) (connected balcony room1) (connected balcony room2) (connected balcony room3) (clean kitchen) (clean living_room) (clean entrance) (clean corridor) (clean wc1) (clean wc2) (clean room3) (location wc1) (battery_100 ) (battery_90 ) (battery_80 ) (battery_70 ) (battery_60 ) (battery_50 ) (battery_40 ) (battery_30 ) (battery_20 ) (battery_10 ))
+	(:goal (and (clean kitchen) (clean entrance) (clean living_room) (clean corridor) (clean wc1) (clean wc2) (clean room1) (clean room2) (clean room3) (battery_10)))
+)
