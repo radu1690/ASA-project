@@ -1,4 +1,4 @@
-# Final Project (Radu Loghin 229368)
+# Final Project
 This is the final delivery for the Autonomous Software Agents project. 
 First run ```npm install``` to install all dependencies.  
 
